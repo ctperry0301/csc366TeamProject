@@ -1,8 +1,10 @@
-# csc366TeamProject
+# JPA Demo
+Object-relational mapping demo, Java Persistence API (JPA)
 
-Cole Perry,
-Elaine Pranadjaya,
-Justin Anderson,
-Nate Holland,
-Rohith Dara,
-Thalia Ward
+Run all tests with:
+
+`./gradlew test`
+
+To run a single test class (for example: `Demo0`):
+
+`./gradlew test --tests *Demo0`
