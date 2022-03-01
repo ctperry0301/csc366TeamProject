@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 import java.sql.Date;
 import java.util.ArrayList;

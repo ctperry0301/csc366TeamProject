@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 
 import javax.persistence.*;
