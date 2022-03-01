@@ -48,10 +48,11 @@ public class EmployeeRepositoryTest {
 
   private final Employee e1 = new Employee("Rohith", "Dara", Date.valueOf("2022-01-02"), 100111001L);  // "reference" person
   private final Employee e2 = new Employee("Cole", "Perry", Date.valueOf("2022-01-02"), 100111002L);  // "reference" person
-
+  private final Paycheck p1 = new Paycheck(Date.valueOf("2022-02-14"), Date.valueOf("2022-02-29"), 40, 46);
 
   @BeforeEach
   private void setup() {
+    e1.addPaycheck(p1);
     employeeRepository.saveAndFlush(e1);
     employeeRepository.saveAndFlush(e2);
   }
@@ -59,13 +60,11 @@ public class EmployeeRepositoryTest {
   @Test
   @Order(1)
   public void testSavePerson() {
-    Employee employee2 = employeeRepository.findByFirstName("Rohith");
-
-    log.info(employee2.toString());
+    Employee testE = employeeRepository.findByFirstName("Rohith");
 
     assertNotNull(e1);
-    assertEquals(employee2.getFirstName(), e1.getFirstName());
-    assertEquals(employee2.getLastName(), e1.getLastName());
+    assertEquals(testE.getFirstName(), e1.getFirstName());
+    assertEquals(testE.getLastName(), e1.getLastName());
   }
 
   @Test
@@ -75,7 +74,51 @@ public class EmployeeRepositoryTest {
     assertNotNull(employeesWithSameStartDate);
     List<Employee> expectedEmployeeList = List.of(e1, e2);
     assertEquals(expectedEmployeeList, employeesWithSameStartDate);
-
   }
+
+  @Test
+  @Order(3)
+  public void testFindAllEmployees() {
+    assertNotNull(employeeRepository.findAll());
+  }
+
+  @Test
+  @Order(4)
+  public void testEmployeeAndPaycheck() {
+    Employee testE = employeeRepository.findByFirstName("Rohith");
+
+    assertNotNull(e1);
+    assertEquals(1, testE.getPaychecks().size());
+  }
+
+  @Test
+  @Order(5)
+  public void testRemovePaycheck() {
+    Employee testE = employeeRepository.findByFirstName("Rohith");
+    Paycheck p = e1.getPaychecks().get(0);
+    log.warn("LSDJFKLSDJFL:SDFKSDFLSDFSD:FSD");
+    log.info(p.toString());
+    testE.removePaycheck(p);
+    employeeRepository.save(testE);
+  }
+
+  @Test
+  @Order(6)
+  public void testRemovePaycheckAndFlush() {
+    Employee testE = employeeRepository.findByFirstName("Rohith");
+    Paycheck p = e1.getPaychecks().get(0);
+    testE.removePaycheck(p);
+    employeeRepository.saveAndFlush(testE);
+  }
+
+  @Test
+  @Order(7)
+  public void testFindByNameWithPaychecksJpql() {
+    Employee testE = employeeRepository.findByNameWithPaychecksJpql("Rohith");
+    assertEquals(e1.getPaychecks(), testE.getPaychecks());
+  }
+
+
+
 
 }

@@ -104,7 +104,6 @@ public class Employee {
           ", lastName='" + lastName + '\'' +
           ", startDate=" + startDate +
           ", SSN=" + SSN +
-          ", paychecks=" + paychecks +
           '}';
     }
 
