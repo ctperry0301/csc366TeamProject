@@ -8,24 +8,28 @@ import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "LocationManager", uniqueConstraints = @UniqueConstraint(columnNames = { "employeeId" }))
-
 public class LocationManager {
-    @Column(name = "employee_id")
+    @Id
     private int employeeId;
 
-    @Column(name = "location_id")
+    @Column(name="locationId")
     private int locationId;
 
-    @Column(name = "bonus")
+    @Column(name="bonus")
     private int bonus;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", nullable = false)
+    @JoinColumn(name="ownerId", nullable=false)
     private Owner owner;
 
-    @OneToMany(mappedBy = "LocationManager", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="manager",
+            cascade = CascadeType.ALL,
+            orphanRemoval = false,
+            fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
+
+    @OneToMany(mappedBy="manager")
+    private List<Shift> shiftsCreated = new ArrayList<Shift>();
 
     public LocationManager(int employeeId, int locationId, int bonus) {
         this.employeeId = employeeId;
@@ -57,7 +61,7 @@ public class LocationManager {
         this.bonus = bonus;
     }
 
-    // to do: need locationManager attribute in Employee table
+    //to do: need locationManager attribute in Employee table
     public void addEmployee(Employee e) {
         employees.add(e);
         e.setLocationManager(this);
@@ -76,18 +80,29 @@ public class LocationManager {
         this.owner = owner;
     }
 
+    public void addShift(Shift shift) {
+        this.getShifts().add(shift);
+        shift.setManager(this);
+    }
+
+    public void removeShift(Shift shift) {
+        this.getShifts().remove(shift);
+    }
+
+    public List<Shift> getShifts() {
+        return this.shiftsCreated;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         LocationManager locationManager = (LocationManager) o;
         return employeeId == locationManager.employeeId
-                && locationId == locationManager.locationId
-                && bonus == locationManager.bonus
-                && Objects.equals(owner, locationManager.owner)
-                && Objects.equals(employees, locationManager.employees);
+            && locationId == locationManager.locationId
+            && bonus == locationManager.bonus
+            && Objects.equals(owner, locationManager.owner)
+            && Objects.equals(employees, locationManager.employees);
     }
 
     @Override
