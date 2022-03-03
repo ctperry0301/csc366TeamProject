@@ -71,6 +71,17 @@ public class LocationManager {
         e.setLocationManager(null);
     }
 
+    //to do: need locationManager attribute in Employee table
+    public void addEmployee(Shift s) {
+        shifts.add(s);
+        s.setManager(this);
+    }
+
+    public void removeEmployee(Shift s) {
+        shifts.remove(e);
+        s.setManager(null);
+    }
+
     public Owner getOwner() {
         return owner;
     }
