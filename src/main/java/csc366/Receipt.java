@@ -35,7 +35,9 @@ public class Receipt {
 
     private LocalDateTime dateTime; // note: no annotation, still included in underlying table
 
-    private Long customerId;
+    @ManyToOne
+    private Customer customer;
+
     private Long locationId;
 
     public Receipt() {
@@ -53,12 +55,12 @@ public class Receipt {
         this.receiptId = id;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long id) {
-        this.customerId = id;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Long getLocationId() {
