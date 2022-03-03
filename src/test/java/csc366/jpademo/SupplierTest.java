@@ -87,7 +87,6 @@ public class SupplierTest {
   @Test
   @Order(4)
   public void testSetandGetSupplyOrderId() {
-    SupplyDetails s2 = new SupplyDetails(10, 2345678L, 8, 2345679L,   Date.valueOf("2022-01-03"), true); // "reference" person
     s1.setSupplyOrderId(1000L);
     assertEquals(s1.getSupplyOrderId(), 1000L);
   }

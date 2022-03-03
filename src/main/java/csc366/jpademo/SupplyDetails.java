@@ -64,7 +64,6 @@ public class SupplyDetails {
     return delivered;
   }
 
-
   public void setSupplyOrderId(Long supplyOrderId) {
     this.supplyOrderId = supplyOrderId;
   }
