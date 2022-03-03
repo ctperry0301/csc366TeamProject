@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
