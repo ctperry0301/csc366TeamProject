@@ -33,6 +33,12 @@ public class LocationManager {
             fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
+    @OneToMany(mappedBy="LocationManager",
+            cascade = CascadeType.ALL,
+            orphanRemoval = false,
+            fetch = FetchType.LAZY)
+    private List<Shift> shifts = new ArrayList<>();
+
     public LocationManager(int employeeId, int locationId, int bonus) {
         this.employeeId = employeeId;
         this.locationId = locationId;
@@ -69,6 +75,17 @@ public class LocationManager {
     public void removeEmployee(Employee e) {
         employees.remove(e);
         e.setLocationManager(null);
+    }
+
+    //to do: need locationManager attribute in Employee table
+    public void addEmployee(Shift s) {
+        shifts.add(s);
+        s.setManager(this);
+    }
+
+    public void removeEmployee(Shift s) {
+        shifts.remove(e);
+        s.setManager(null);
     }
 
     public Owner getOwner() {
