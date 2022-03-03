@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -35,8 +35,11 @@ public class Receipt {
 
     private LocalDateTime dateTime; // note: no annotation, still included in underlying table
 
-    private Long customerId;
-    private Long locationId;
+    @ManyToOne
+    private Customer customer;
+
+    @ManyToOne
+    private Location location;
 
     public Receipt() {
     }
@@ -53,20 +56,20 @@ public class Receipt {
         this.receiptId = id;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long id) {
-        this.customerId = id;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocationId(Long id) {
-        this.locationId = id;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public LocalDateTime getDateTime() {
@@ -80,7 +83,8 @@ public class Receipt {
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(",", Receipt.class.getSimpleName() + "[", "]");
-        sj.add(receiptId.toString()).add(dateTime.toString()).add(locationId.toString()).add(customerId.toString());
+        sj.add(receiptId.toString()).add(dateTime.toString()).add(location.getLocationId().toString())
+                .add(customer.getCustomerId().toString());
         return sj.toString();
     }
 

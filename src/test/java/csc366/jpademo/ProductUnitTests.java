@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,7 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// Demo0: Add, list, and remove Customer instances
+// Demo0: Add, list, and remove Person instances
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -37,74 +37,74 @@ import org.slf4j.LoggerFactory;
         "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 })
 @TestMethodOrder(OrderAnnotation.class)
-public class CustomerUnitTests {
+public class ProductUnitTests {
 
-    private final static Logger log = LoggerFactory.getLogger(CustomerUnitTests.class);
+    private final static Logger log = LoggerFactory.getLogger(ProductUnitTests.class);
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private ProductRepository productRepository;
 
-    private final Customer customer = new Customer("test", "test"); // "reference" person
+    private final Product product = new Product("test", 0.0f); // "reference" person
 
     @BeforeEach
     private void setup() {
-        customerRepository.saveAndFlush(customer);
+        productRepository.saveAndFlush(product);
     }
 
     @Test
     @Order(1)
-    public void testSaveCustomer() {
-        Customer customer2 = customerRepository.findByFirstName("test");
+    public void testSaveProduct() {
+        Product product2 = productRepository.findByName("test");
 
-        log.info(customer2.toString());
+        log.info(product2.toString());
 
-        assertNotNull(customer);
-        assertEquals(customer2.getFirstName(), customer.getFirstName());
-        assertEquals(customer2.getLastName(), customer.getLastName());
+        assertNotNull(product);
+        assertEquals(product2.getProductName(), product.getProductName());
+        assertEquals(product2.getPrice(), product.getPrice());
     }
 
     @Test
     @Order(2)
-    public void testGetCustomer() {
-        Customer customer2 = customerRepository.findByFirstName("test");
-        assertNotNull(customer);
-        assertEquals(customer2.getFirstName(), customer.getFirstName());
-        assertEquals(customer2.getLastName(), customer.getLastName());
+    public void testGetProduct() {
+        Product product2 = productRepository.findByName("test");
+        assertNotNull(product);
+        assertEquals(product2.getProductName(), product.getProductName());
+        assertEquals(product2.getPrice(), product.getPrice());
     }
 
     @Test
     @Order(3)
-    public void testDeleteCustomer() {
-        customerRepository.delete(customer);
-        customerRepository.flush();
+    public void testDeleteProduct() {
+        productRepository.delete(product);
+        productRepository.flush();
     }
 
     @Test
     @Order(4)
-    public void testFindAllCustomers() {
-        assertNotNull(customerRepository.findAll());
+    public void testFindAllProducts() {
+        assertNotNull(productRepository.findAll());
     }
 
     @Test
     @Order(5)
-    public void testDeletByCustomerId() {
-        Customer e = customerRepository.findByFirstName("test");
-        customerRepository.deleteById(e.getCustomerId());
-        customerRepository.flush();
+    public void testDeletByProductId() {
+        Product e = productRepository.findByName("test");
+        productRepository.deleteById(e.getProductId());
+        productRepository.flush();
     }
 
     @Test
     @Order(6)
     public void testJpqlFinder() {
-        Customer e = customerRepository.findByNameJpql("test");
-        assertEquals(e.getFirstName(), customer.getFirstName());
+        Product e = productRepository.findByNameJpql("test");
+        assertEquals(e.getProductName(), product.getProductName());
     }
 
     @Test
     @Order(7)
     public void testSqlFinder() {
-        Customer c = customerRepository.findByNameSql("test");
-        assertEquals(c.getFirstName(), customer.getFirstName());
+        Product p = productRepository.findByNameSql("test");
+        assertEquals(p.getProductName(), product.getProductName());
     }
 
 }
