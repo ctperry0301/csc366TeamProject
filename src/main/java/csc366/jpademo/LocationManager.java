@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,18 +6,12 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
-
-@Entity  
-@Table(
-    name = "LocationManager",
-    uniqueConstraints = @UniqueConstraint(columnNames={"employeeId"})
-)
-
+@Entity
 public class LocationManager {
-    @Column(name="employee_id")
+    @Id
     private int employeeId;
 
-    @Column(name="location_id")
+    @Column(name="locationId")
     private int locationId;
 
     @Column(name="bonus")
@@ -27,17 +21,14 @@ public class LocationManager {
     @JoinColumn(name="ownerId", nullable=false)
     private Owner owner;
 
-    @OneToMany(mappedBy="LocationManager",
+    @OneToMany(mappedBy="manager",
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
-    @OneToMany(mappedBy="LocationManager",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
-    private List<Shift> shifts = new ArrayList<>();
+    @OneToMany(mappedBy="manager")
+    private List<Shift> shiftsCreated = new ArrayList<Shift>();
 
     public LocationManager(int employeeId, int locationId, int bonus) {
         this.employeeId = employeeId;
@@ -48,6 +39,7 @@ public class LocationManager {
     public int getEmployeeId() {
         return employeeId;
     }
+
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
@@ -55,6 +47,7 @@ public class LocationManager {
     public int getLocationId() {
         return locationId;
     }
+
     public void setLocationId(int locationId) {
         this.locationId = locationId;
     }
@@ -62,6 +55,7 @@ public class LocationManager {
     public int getBonus() {
         return bonus;
     }
+
     public void setBonus(int bonus) {
         this.bonus = bonus;
     }
@@ -91,8 +85,22 @@ public class LocationManager {
     public Owner getOwner() {
         return owner;
     }
+
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public void addShift(Shift shift) {
+        this.getShifts().add(shift);
+        shift.setManager(this);
+    }
+
+    public void removeShift(Shift shift) {
+        this.getShifts().remove(shift);
+    }
+
+    public List<Shift> getShifts() {
+        return this.shiftsCreated;
     }
 
     @Override
@@ -100,10 +108,10 @@ public class LocationManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LocationManager locationManager = (LocationManager) o;
-        return employeeId == locationManager.employeeId 
-            && locationId == locationManager.locationId 
-            && bonus == locationManager.bonus 
-            && Objects.equals(owner, locationManager.owner) 
+        return employeeId == locationManager.employeeId
+            && locationId == locationManager.locationId
+            && bonus == locationManager.bonus
+            && Objects.equals(owner, locationManager.owner)
             && Objects.equals(employees, locationManager.employees);
     }
 
