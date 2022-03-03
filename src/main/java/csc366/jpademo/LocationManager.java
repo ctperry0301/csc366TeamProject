@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,17 +70,6 @@ public class LocationManager {
     public void removeEmployee(Employee e) {
         employees.remove(e);
         e.setLocationManager(null);
-    }
-
-    //to do: need locationManager attribute in Employee table
-    public void addEmployee(Shift s) {
-        shifts.add(s);
-        s.setManager(this);
-    }
-
-    public void removeEmployee(Shift s) {
-        shifts.remove(e);
-        s.setManager(null);
     }
 
     public Owner getOwner() {

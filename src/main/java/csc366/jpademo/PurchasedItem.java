@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.UniqueConstraint;
@@ -30,8 +31,12 @@ import javax.validation.constraints.NotNull;
 public class PurchasedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-    private Long receiptId;
+
+    @ManyToOne
+    private Product product;
+
+    @OneToOne
+    private Receipt receipt;
 
     private Integer quantity; // note: no annotation, still included in underlying table
 
@@ -42,12 +47,20 @@ public class PurchasedItem {
         this.quantity = quantity;
     }
 
-    public Long getProductId() {
-        return this.productId;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public Long getReceiptId() {
-        return this.receiptId;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Receipt getReceipt() {
+        return this.receipt;
+    }
+
+    public void setReceipt(Receipt receipt) {
+        this.receipt = receipt;
     }
 
     public Integer getQuantity() {
@@ -61,7 +74,7 @@ public class PurchasedItem {
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(",", Customer.class.getSimpleName() + "[", "]");
-        sj.add(productId.toString()).add(receiptId.toString()).add(quantity.toString());
+        sj.add(product.getProductId().toString()).add(receipt.getReceiptId().toString()).add(quantity.toString());
         return sj.toString();
     }
 
@@ -71,8 +84,8 @@ public class PurchasedItem {
             return true;
         if (!(o instanceof PurchasedItem))
             return false;
-        return productId != null && productId.equals(((PurchasedItem) o).getProductId())
-                && receiptId != null && receiptId.equals(((PurchasedItem) o).getReceiptId());
+        return product != null && product.equals(((PurchasedItem) o).getProduct())
+                && receipt != null && receipt.equals(((PurchasedItem) o).getReceipt());
     }
 
     @Override
