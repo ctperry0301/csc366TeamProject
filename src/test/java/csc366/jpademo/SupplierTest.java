@@ -16,6 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.TestPropertySource;
 
+import java.sql.Date;
+
 
 // SupplierTest: Add, list, and remove Supplier instances
 
@@ -45,6 +47,8 @@ public class SupplierTest {
 
   private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
 
+  private final SupplyDetails s1 = new SupplyDetails(10, 12345678910L, 7, 12345678910L,   Date.valueOf("2022-01-02"), true); // "reference" person
+
   @BeforeEach
   private void setup() {
     supplierRepository.saveAndFlush(supplier);
@@ -62,5 +66,29 @@ public class SupplierTest {
 
     assertNotNull(supplier);
     assertEquals(supplier2.getSupplierAddress(), "1 Grand Ave, San Luis Obispo, CA, 93405");
+  }
+
+  @Test
+  @Order(2)
+  public void testSupplyOrderId() {
+    SupplyDetails s2 = new SupplyDetails(10, 2345678L, 8, 2345679L,   Date.valueOf("2022-01-03"), true); // "reference" person
+
+    assertNotNull(s2);
+    assertEquals(s1.getSupplyOrderId(), s2.getSupplyOrderId());
+  }
+
+  @Test
+  @Order(3)
+  public void testDelivered() {
+    assertNotNull(s1);
+    assertEquals(s1.getDelivered(), true);
+  }
+
+  @Test
+  @Order(4)
+  public void testSetandGetSupplyOrderId() {
+    SupplyDetails s2 = new SupplyDetails(10, 2345678L, 8, 2345679L,   Date.valueOf("2022-01-03"), true); // "reference" person
+    s1.setSupplyOrderId(1000L);
+    assertEquals(s1.getSupplyOrderId(), 1000L);
   }
 }

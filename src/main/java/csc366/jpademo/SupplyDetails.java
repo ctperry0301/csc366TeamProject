@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Table(
   name = "SupplyDetails",
   // TODO: add foreign key constraints
-  uniqueConstraints = @UniqueConstraint(columnNames={"supplyOrderId", "ingredientId", "packagedGoodsId"})
+  uniqueConstraints = @UniqueConstraint(columnNames={"supplyOrderId"})
 )
 
 public class SupplyDetails {
@@ -27,13 +27,13 @@ public class SupplyDetails {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Long supplyOrderId;
 
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Long ingredientID;
+  @Column(name="ingredientId")
+  private Long ingredientId;
 
   @Column(name="ingredientQuantity")
   private Integer ingredientQuantity;
 
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @Column(name="packagedGoodsId")
   private Long packagedGoodsId;
 
   @Column(name="packagedGoodsQuantity")
@@ -47,9 +47,11 @@ public class SupplyDetails {
 
   public SupplyDetails() { }
 
-  public SupplyDetails(Integer ingredientQuantity, Integer packagedGoodsQuantity, Date deliveryDate, Boolean delivered) {
+  public SupplyDetails(Integer ingredientQuantity, Long ingredientId, Integer packagedGoodsQuantity, Long packagedGoodsId, Date deliveryDate, Boolean delivered) {
     this.ingredientQuantity = ingredientQuantity;
+    this.ingredientId = ingredientId;
     this.packagedGoodsQuantity = packagedGoodsQuantity;
+    this.packagedGoodsId = packagedGoodsId;
     this.deliveryDate = deliveryDate;
     this.delivered = delivered;
   }
@@ -57,6 +59,11 @@ public class SupplyDetails {
   public Long getSupplyOrderId() {
     return supplyOrderId;
   }
+
+  public Boolean getDelivered() {
+    return delivered;
+  }
+
 
   public void setSupplyOrderId(Long supplyOrderId) {
     this.supplyOrderId = supplyOrderId;
@@ -66,7 +73,7 @@ public class SupplyDetails {
   public String toString() {
     return "SupplyDetails{" +
       "supplyOrderId=" + supplyOrderId +
-      ", ingredientID=" + ingredientID +
+      ", ingredientId=" + ingredientId +
       ", ingredientQuantity=" + ingredientQuantity +
       ", packagedGoodsId=" + packagedGoodsId +
       ", packagedGoodsQuantity=" + packagedGoodsQuantity +
@@ -80,12 +87,12 @@ public class SupplyDetails {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SupplyDetails that = (SupplyDetails) o;
-    return Objects.equals(supplyOrderId, that.supplyOrderId) && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(ingredientQuantity, that.ingredientQuantity) && Objects.equals(packagedGoodsId, that.packagedGoodsId) && Objects.equals(packagedGoodsQuantity, that.packagedGoodsQuantity) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(delivered, that.delivered);
+    return Objects.equals(supplyOrderId, that.supplyOrderId) && Objects.equals(ingredientId, that.ingredientId) && Objects.equals(ingredientQuantity, that.ingredientQuantity) && Objects.equals(packagedGoodsId, that.packagedGoodsId) && Objects.equals(packagedGoodsQuantity, that.packagedGoodsQuantity) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(delivered, that.delivered);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(supplyOrderId, ingredientID, ingredientQuantity, packagedGoodsId, packagedGoodsQuantity, deliveryDate, delivered);
+    return Objects.hash(supplyOrderId, ingredientId, ingredientQuantity, packagedGoodsId, packagedGoodsQuantity, deliveryDate, delivered);
   }
 }
 
