@@ -36,6 +36,10 @@ public class Employee {
             fetch = FetchType.LAZY)
     private List<Paycheck> paychecks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "worker")
+    private List<Shift> shifts = new ArrayList<>();
+
+
     public Employee(String firstName, String lastName, Date startDate, Long SSN) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,6 +98,22 @@ public class Employee {
 
     public List<Paycheck> getPaychecks() {
         return this.paychecks;
+    }
+
+    public List<Shift> getShifts() {
+        return this.shifts;
+    }
+
+    public void addShift(Shift shift) {
+        if (shift != null) {
+            shift.setWorker(this);
+        }
+    }
+
+    public void removeShift(Shift shift) {
+        if (shift != null) {
+            shifts.remove(shift);
+        }
     }
 
     @Override

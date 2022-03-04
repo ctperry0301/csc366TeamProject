@@ -111,7 +111,7 @@ public class Shift {
             }
 
             this.worker = worker;
-            if (!this.manager.getShifts().contains(this)) {
+            if (!this.worker.getShifts().contains(this)) {
                 this.worker.addShift(this);
             }
         }
