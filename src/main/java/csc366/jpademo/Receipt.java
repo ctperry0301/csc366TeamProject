@@ -83,7 +83,7 @@ public class Receipt {
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(",", Receipt.class.getSimpleName() + "[", "]");
-        sj.add(receiptId.toString()).add(dateTime.toString()).add(location.getLocationId().toString())
+        sj.add(receiptId.toString()).add(dateTime.toString()).add(Integer.toString(location.getLocationId()))
                 .add(customer.getCustomerId().toString());
         return sj.toString();
     }
