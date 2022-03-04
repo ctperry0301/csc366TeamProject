@@ -39,6 +39,9 @@ public class Employee {
     @OneToMany(mappedBy = "worker")
     private List<Shift> shifts = new ArrayList<>();
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name="managerId", nullable=false)
+    private LocationManager manager;
 
     public Employee(String firstName, String lastName, Date startDate, Long SSN) {
         this.firstName = firstName;
@@ -113,6 +116,12 @@ public class Employee {
     public void removeShift(Shift shift) {
         if (shift != null) {
             shifts.remove(shift);
+        }
+    }
+
+    public void setLocationManager(LocationManager manager) {
+        if (manager != null) {
+            this.manager = manager;
         }
     }
 
