@@ -8,20 +8,15 @@ import javax.persistence.*;
 
 
 @Entity  
-@Table(
-    name = "FreshMadeGood",
-    uniqueConstraints = @UniqueConstraint(columnNames={"FreshMadeGoodId"})
-)
-
 public class FreshMadeGood {
-    @Column(name="FreshMadeGoodId")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int freshMadeGoodId;
 
     @Column(name="Name")
     private String name;
 
-    public FreshMadeGood(int freshMadeGoodId, String name) {
-        this.freshMadeGoodId = freshMadeGoodId;
+    public FreshMadeGood(String name) {
         this.name = name;
     }
 
