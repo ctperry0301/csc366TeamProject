@@ -1,7 +1,7 @@
 package csc366.jpademo;
 
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 
@@ -13,15 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 
-import javax.validation.constraints.NotNull;
-
 @Entity
 @Table(
-  name = "SupplyDetails",
+  name = "SupplyDetail",
   uniqueConstraints = @UniqueConstraint(columnNames={"supplyOrderId"})
 )
 
-public class SupplyDetails {
+public class SupplyDetail {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Long supplyOrderId;
@@ -44,9 +42,9 @@ public class SupplyDetails {
   @Column(name="delivered")
   private Boolean delivered;
 
-  public SupplyDetails() { }
+  public SupplyDetail() { }
 
-  public SupplyDetails(Integer ingredientQuantity, Long ingredientId, Integer packagedGoodsQuantity, Long packagedGoodsId, Date deliveryDate, Boolean delivered) {
+  public SupplyDetail(Integer ingredientQuantity, Long ingredientId, Integer packagedGoodsQuantity, Long packagedGoodsId, Date deliveryDate, Boolean delivered) {
     this.ingredientQuantity = ingredientQuantity;
     this.ingredientId = ingredientId;
     this.packagedGoodsQuantity = packagedGoodsQuantity;
@@ -69,7 +67,7 @@ public class SupplyDetails {
 
   @Override
   public String toString() {
-    return "SupplyDetails{" +
+    return "SupplyDetail{" +
       "supplyOrderId=" + supplyOrderId +
       ", ingredientId=" + ingredientId +
       ", ingredientQuantity=" + ingredientQuantity +
@@ -84,7 +82,7 @@ public class SupplyDetails {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SupplyDetails that = (SupplyDetails) o;
+    SupplyDetail that = (SupplyDetail) o;
     return Objects.equals(supplyOrderId, that.supplyOrderId) && Objects.equals(ingredientId, that.ingredientId) && Objects.equals(ingredientQuantity, that.ingredientQuantity) && Objects.equals(packagedGoodsId, that.packagedGoodsId) && Objects.equals(packagedGoodsQuantity, that.packagedGoodsQuantity) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(delivered, that.delivered);
   }
 

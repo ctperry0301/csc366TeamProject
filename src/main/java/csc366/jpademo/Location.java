@@ -1,4 +1,6 @@
 package csc366;
+import csc366.jpademo.SupplyDetail;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +51,12 @@ public class Location {
             fetch = FetchType.LAZY)
     private List<Receipt> receipts;
 
-    // One location has zero to many SupplyDetails
+    // One location has zero to many SupplyDetail
     @OneToMany(mappedBy="Location",
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
-    private List<SupplyDetails> supplyDetails;
+    private List<SupplyDetail> supplyDetail;
 
     // Many Locations sell many products
     @ManyToMany(mappedBy="Location",
@@ -64,7 +66,7 @@ public class Location {
     private List<Product> products;
     
 
-    // Add relationship to Product, SupplyDetails, LocationManager, and Supplier
+    // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
     public Location(int locationId, String address, LocationManager locationManager, Date openDate) {
         this.locationId = locationId;
