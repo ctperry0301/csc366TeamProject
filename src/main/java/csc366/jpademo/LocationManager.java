@@ -7,10 +7,16 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
-@Entity
+
+@Entity  
+@Table(
+    name = "LocationManager",
+    uniqueConstraints = @UniqueConstraint(columnNames={"managerId"})
+)
+
 public class LocationManager {
     @Id
-    private int employeeId;
+    private int managerId;
 
     @Column(name="locationId")
     private int locationId;
@@ -31,18 +37,18 @@ public class LocationManager {
     @OneToMany(mappedBy="manager")
     private List<Shift> shiftsCreated = new ArrayList<Shift>();
 
-    public LocationManager(int employeeId, int locationId, int bonus) {
-        this.employeeId = employeeId;
+    public LocationManager(int managerId, int locationId, int bonus) {
+        this.managerId = managerId;
         this.locationId = locationId;
         this.bonus = bonus;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public int getmanagerId() {
+        return managerId;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setmanagerId(int managerId) {
+        this.managerId = managerId;
     }
 
     public int getLocationId() {
@@ -98,7 +104,7 @@ public class LocationManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LocationManager locationManager = (LocationManager) o;
-        return employeeId == locationManager.employeeId
+        return managerId == locationManager.managerId
             && locationId == locationManager.locationId
             && bonus == locationManager.bonus
             && Objects.equals(owner, locationManager.owner)
@@ -107,6 +113,6 @@ public class LocationManager {
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, locationId, bonus, owner, employees);
+        return Objects.hash(managerId, locationId, bonus, owner, employees);
     }
 }

@@ -36,6 +36,10 @@ public class Employee {
             fetch = FetchType.LAZY)
     private List<Paycheck> paychecks = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name="managerId", nullable=false)
+    private LocationManager manager;
+
     public Employee(String firstName, String lastName, Date startDate, Long SSN) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -95,6 +99,11 @@ public class Employee {
     public List<Paycheck> getPaychecks() {
         return this.paychecks;
     }
+
+    public void setLocationManager(LocationManager managerId) {
+        this.manager = managerId;
+    }
+
 
     @Override
     public String toString() {
