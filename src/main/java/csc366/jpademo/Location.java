@@ -1,4 +1,4 @@
-package csc366;
+package csc366.jpademo;
 import csc366.jpademo.SupplyDetail;
 
 import java.sql.Date;
