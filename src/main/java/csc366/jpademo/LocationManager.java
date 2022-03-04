@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 public class LocationManager {
     @Id
-    private int employeeId;
+    private long employeeId;
 
     @Column(name="locationId")
     private int locationId;
@@ -37,8 +37,8 @@ public class LocationManager {
         this.bonus = bonus;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public long getEmployeeId() {
+        return this.employeeId;
     }
 
     public void setEmployeeId(int employeeId) {

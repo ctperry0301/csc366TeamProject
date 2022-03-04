@@ -16,8 +16,9 @@ import javax.persistence.*;
 )
 
 public class Location {
-    @Column(name="locationId")
-    private int locationId;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long locationId;
 
     @Column(name="address")
     private String address;
@@ -67,18 +68,14 @@ public class Location {
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
-    public Location(int locationId, String address, LocationManager locationManager, Date openDate) {
-        this.locationId = locationId;
+    public Location(String address, LocationManager locationManager, Date openDate) {
         this.address = address;
         this.locationManager = locationManager;
         this.openDate = openDate;
     }
 
-    public int getLocationId() {
+    public long getLocationId() {
         return locationId;
-    }
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
     }
 
     public String getAddress() {

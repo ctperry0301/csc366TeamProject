@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class FreshMadeGood {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int freshMadeGoodId;
+    private long freshMadeGoodId;
 
     @Column(name="Name")
     private String name;
@@ -20,8 +20,8 @@ public class FreshMadeGood {
         this.name = name;
     }
 
-    public int getFreshMadeGoodId() {
-        return freshMadeGoodId;
+    public long getFreshMadeGoodId() {
+        return this.freshMadeGoodId;
     }
     public void setFreshMadeGoodId(int freshMadeGoodId) {
         this.freshMadeGoodId = freshMadeGoodId;
