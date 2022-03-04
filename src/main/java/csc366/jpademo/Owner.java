@@ -77,14 +77,18 @@ public class Owner {
         lm.setOwner(null);
     }
 
+    public List<LocationManager> getLocationManagers() {
+        return locationManagers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Owner owner = (Owner) o;
         return ownerId == owner.ownerId 
-            && locationId == owner.firstName
-            && bonus == owner.lastName 
+            && firstName == owner.firstName
+            && lastName == owner.lastName 
             && Objects.equals(locationManagers, owner.locationManagers);
     }
 

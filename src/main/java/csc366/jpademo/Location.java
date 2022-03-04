@@ -74,7 +74,7 @@ public class Location {
     }
 
     public int getLocationId() {
-        return LocationId;
+        return locationId;
     }
     public void setLocationId(int locationId) {
         this.locationId = locationId;

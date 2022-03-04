@@ -26,7 +26,7 @@ public class FreshMadeGood {
     }
 
     public int getFreshMadeGoodId() {
-        return packagedGoodId;
+        return freshMadeGoodId;
     }
     public void setFreshMadeGoodId(int freshMadeGoodId) {
         this.freshMadeGoodId = freshMadeGoodId;
@@ -45,7 +45,7 @@ public class FreshMadeGood {
         if (o == null || getClass() != o.getClass()) return false;
         FreshMadeGood fmg = (FreshMadeGood) o;
         return freshMadeGoodId == fmg.freshMadeGoodId
-            && name == pg.name;
+            && name == fmg.name;
     }
 
     @Override
