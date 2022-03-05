@@ -19,24 +19,25 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Arrays;
 
 // Demo0: Add, list, and remove Person instances
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @TestPropertySource(properties = {
-  "spring.main.banner-mode=off",
-  "spring.jpa.hibernate.ddl-auto=update",
-  "logging.level.root=ERROR",
-  "logging.level.csc366=DEBUG",
+    "spring.main.banner-mode=off",
+    "spring.jpa.hibernate.ddl-auto=update",
+    "logging.level.root=ERROR",
+    "logging.level.csc366=DEBUG",
 
-  "logging.level.org.hibernate.SQL=DEBUG",
-  "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
-  "spring.jpa.properties.hibernate.format_sql=true",
-  "spring.jpa.show-sql=false",   // prevent duplicate logging
-  "spring.jpa.properties.hibernate.show_sql=false",
+    "logging.level.org.hibernate.SQL=DEBUG",
+    "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
+    "spring.jpa.properties.hibernate.format_sql=true",
+    "spring.jpa.show-sql=false", // prevent duplicate logging
+    "spring.jpa.properties.hibernate.show_sql=false",
 
-  "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 })
 @TestMethodOrder(OrderAnnotation.class)
 public class EmployeeRepositoryTest {
@@ -46,8 +47,10 @@ public class EmployeeRepositoryTest {
   @Autowired
   private EmployeeRepository employeeRepository;
 
-  private final Employee e1 = new Employee("Rohith", "Dara", Date.valueOf("2022-01-02"), 100111001L);  // "reference" person
-  private final Employee e2 = new Employee("Cole", "Perry", Date.valueOf("2022-01-02"), 100111002L);  // "reference" person
+  private final Employee e1 = new Employee("Rohith", "Dara", Date.valueOf("2022-01-02"), 100111001L); // "reference"
+                                                                                                      // person
+  private final Employee e2 = new Employee("Cole", "Perry", Date.valueOf("2022-01-02"), 100111002L); // "reference"
+                                                                                                     // person
   private final Paycheck p1 = new Paycheck(Date.valueOf("2022-02-14"), Date.valueOf("2022-02-29"), 40, 46);
 
   @BeforeEach
@@ -72,8 +75,9 @@ public class EmployeeRepositoryTest {
   public void testFindByStartDate() {
     List<Employee> employeesWithSameStartDate = employeeRepository.findByStartDate(Date.valueOf("2022-01-02"));
     assertNotNull(employeesWithSameStartDate);
-    List<Employee> expectedEmployeeList = List.of(e1, e2);
+    List<Employee> expectedEmployeeList = Arrays.asList(e1, e2);
     assertEquals(expectedEmployeeList, employeesWithSameStartDate);
+
   }
 
   @Test

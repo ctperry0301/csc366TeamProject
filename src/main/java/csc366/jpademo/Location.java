@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import csc366.jpademo.SupplyDetail;
 
 import java.sql.Date;
@@ -8,26 +9,22 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
-
-@Entity  
-@Table(
-    name = "Location",
-    uniqueConstraints = @UniqueConstraint(columnNames={"locationId"})
-)
+@Entity
+@Table(name = "Location", uniqueConstraints = @UniqueConstraint(columnNames = { "locationId" }))
 
 public class Location {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long locationId;
 
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
 
-    //@OneToOne
-    //@Column(name="locationManager")
-    //private LocationManager locationManager;
+    // @OneToOne
+    // @Column(name="locationManager")
+    // private LocationManager locationManager;
 
-    @Column(name="openDate")
+    @Column(name = "openDate")
     private Date openDate;
 
     // One location has one Owner
@@ -35,38 +32,32 @@ public class Location {
     @JoinColumn(name = "owner", referencedColumnName = "ownerId")
     private Owner owner;
 
-    /* the following line should be added to LocationManager.java:
-    @OneToOne
-    @JoinColumn(name = "owner", referencedColumnName = "ownerId")
-    private Location location;
-    */
-    
-    // the following line established the one to one relationship between Location and LocationManager
+    /*
+     * the following line should be added to LocationManager.java:
+     * 
+     * @OneToOne
+     * 
+     * @JoinColumn(name = "owner", referencedColumnName = "ownerId")
+     * private Location location;
+     */
+
+    // the following line established the one to one relationship between Location
+    // and LocationManager
     @OneToOne(mappedBy = "location")
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
-    @OneToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "Location", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<Receipt> receipts;
 
     // One location has zero to many SupplyDetail
-    @OneToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "Location", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<SupplyDetail> supplyDetails;
 
     // Many Locations sell many products
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "LocationProducts", 
-        joinColumns = @JoinColumn(name = "products"), 
-        inverseJoinColumns = @JoinColumn(name = "locations"))
+    @JoinTable(name = "LocationProducts", joinColumns = @JoinColumn(name = "products"), inverseJoinColumns = @JoinColumn(name = "locations"))
     private List<Product> products;
-    
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
@@ -83,6 +74,7 @@ public class Location {
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -90,6 +82,7 @@ public class Location {
     public LocationManager getLocationManager() {
         return locationManager;
     }
+
     public void setLocationManager(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
@@ -104,13 +97,15 @@ public class Location {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Location location = (Location) o;
-        return locationId == location.locationId 
-            && address == location.address 
-            && locationManager == location.locationManager
-            && openDate == location.openDate;
+        return locationId == location.locationId
+                && address == location.address
+                && locationManager == location.locationManager
+                && openDate == location.openDate;
     }
 
     @Override

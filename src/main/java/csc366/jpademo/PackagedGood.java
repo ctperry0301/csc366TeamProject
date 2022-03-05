@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,19 +7,15 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
-
-@Entity  
-@Table(
-    name = "PackagedGood",
-    uniqueConstraints = @UniqueConstraint(columnNames={"packagedGoodId"})
-)
+@Entity
+@Table(name = "PackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = { "packagedGoodId" }))
 
 public class PackagedGood {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long packagedGoodId;
 
-    @Column(name="Name")
+    @Column(name = "Name")
     private String name;
 
     public PackagedGood(String name) {
@@ -32,6 +29,7 @@ public class PackagedGood {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
