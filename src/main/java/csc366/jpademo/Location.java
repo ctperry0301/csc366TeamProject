@@ -57,12 +57,14 @@ public class Location {
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
-    private List<SupplyDetail> supplyDetail;
+    private List<SupplyDetail> supplyDetails;
 
     // Many Locations sell many products
-    @ManyToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "LocationProducts", 
+        joinColumns = @JoinColumn(name = "products"), 
+        inverseJoinColumns = @JoinColumn(name = "locations"))
     private List<Product> products;
     
 

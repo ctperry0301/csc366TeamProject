@@ -2,6 +2,7 @@ package csc366.jpademo;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.StringJoiner;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.UniqueConstraint;
 
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
+    @ManyToMany(mappedBy="products")
+    List<Location> locations;
 
     private String productName;
     private Float price; // note: no annotation, still included in underlying table
