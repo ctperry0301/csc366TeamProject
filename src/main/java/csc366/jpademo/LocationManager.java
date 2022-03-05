@@ -23,6 +23,7 @@ public class LocationManager {
 
     @OneToOne(orphanRemoval = false,
             optional = false,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     @JoinColumn(name="location",
             nullable=false)
@@ -100,6 +101,6 @@ public class LocationManager {
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, location, bonus, employees);
+        return 333;
     }
 }

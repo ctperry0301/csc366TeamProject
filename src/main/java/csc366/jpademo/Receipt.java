@@ -41,8 +41,7 @@ public class Receipt {
     @ManyToOne
     private Location location;
 
-    public Receipt() {
-    }
+    public Receipt() {}
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;

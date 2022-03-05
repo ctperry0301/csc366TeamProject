@@ -37,6 +37,7 @@ public class FreshMadeGood {
     public long getFreshMadeGoodId() {
         return this.freshMadeGoodId;
     }
+
     public void setFreshMadeGoodId(int freshMadeGoodId) {
         this.freshMadeGoodId = freshMadeGoodId;
     }
@@ -44,6 +45,7 @@ public class FreshMadeGood {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
