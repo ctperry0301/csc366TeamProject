@@ -61,7 +61,6 @@ public class Location {
     // Many Locations sell many products
     @ManyToMany(mappedBy="Location",
             cascade = CascadeType.ALL,
-            orphanRemoval = false,
             fetch = FetchType.LAZY)
     private List<Product> products;
     
