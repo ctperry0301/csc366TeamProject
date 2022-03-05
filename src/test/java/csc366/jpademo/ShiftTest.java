@@ -50,13 +50,40 @@ public class ShiftTest {
     @Autowired
     private ShiftRepository shiftRepo;
 
-    private final LocationManager manager = new LocationManager(1, 1, 500);
-    private final Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(12345));
-	private final Shift shift = new Shift(new Date(), new Date(), worker, manager);
+    @Autowired
+    private LocationManagerRepository managerRepo;
+
+    @Autowired
+    private EmployeeRepository empRepo;
+
+    @Autowired
+    private LocationRepository locationRepo;
+
+    @Autowired
+    private OwnerRepository ownerRepo;
+
+    private LocationManager manager = null;
+    private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
+    private Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(123456));
+	private Shift shift = null;
+	private final Location location = new Location("addr", new java.sql.Date(1000000));
+	private final Owner owner = new Owner("owner", "name");
 
     @BeforeEach
     private void setup() {
-		shiftRepo.saveAndFlush(shift);
+		ownerRepo.saveAndFlush(owner);
+		empRepo.saveAndFlush(managerEmp);
+		empRepo.saveAndFlush(worker);
+		location.setOwner(owner);
+		locationRepo.saveAndFlush(location);
+		manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
+		manager.addEmployee(worker);
+		managerRepo.saveAndFlush(manager);
+		shift = new Shift(new Date(), new Date(), worker, manager);
+		shift.setWorker(worker);
+		worker.addShift(shift);
+		worker = empRepo.saveAndFlush(worker);
+		shift = shiftRepo.saveAndFlush(shift);
     }
 
     @Test
@@ -70,20 +97,9 @@ public class ShiftTest {
 
     @Test
     @Order(2)
-    public void testMarkShiftAsWorked() {
-		assertEquals(shift.getWorked(), false);
-		shiftRepo.markShiftAsWorked(shift.getId());
-		shiftRepo.saveAndFlush(shift);
-
-		Shift shift2 = shiftRepo.findByShiftId(shift.getId());
-		assertEquals(shift2.getWorked(), true);
-    }
-
-    @Test
-    @Order(3)
-    public void testSetManager() {
+    public void testChangeManager() {
 		assertEquals(manager.getShifts().size(), 1);
-		LocationManager newManager = new LocationManager(2, 2, 1000);
+		LocationManager newManager = new LocationManager(2, location, 1000);
 		shift.setManager(newManager);
 		assertEquals(manager.getShifts().size(), 0);
 		assertEquals(newManager.getShifts().size(), 1);

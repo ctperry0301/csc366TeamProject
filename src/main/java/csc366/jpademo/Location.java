@@ -42,7 +42,9 @@ public class Location {
     */
     
     // the following line established the one to one relationship between Location and LocationManager
-    @OneToOne(mappedBy = "location")
+    @OneToOne(mappedBy = "location",
+            optional = false
+    )
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
@@ -67,11 +69,12 @@ public class Location {
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
-    public Location(String address, LocationManager locationManager, Date openDate) {
+    public Location(String address, Date openDate) {
         this.address = address;
-        this.locationManager = locationManager;
         this.openDate = openDate;
     }
+
+    public Location() {}
 
     public long getLocationId() {
         return locationId;
@@ -97,6 +100,10 @@ public class Location {
 
     public void setOpenDate(Date openDate) {
         this.openDate = openDate;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     @Override
