@@ -29,10 +29,6 @@ public class Owner {
     @OneToMany(mappedBy = "owner")
     private List<Location> locations;
 
-    // one owner manages many LocationManagers
-    @OneToMany(mappedBy = "owner")
-    private List<LocationManager> locationManagers;
-
     /*@OneToMany(mappedBy="Owner",
             cascade = CascadeType.ALL,
             orphanRemoval = false,
@@ -44,6 +40,8 @@ public class Owner {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public Owner() {}
 
     public long getOwnerId() {
         return this.ownerId;
@@ -63,21 +61,6 @@ public class Owner {
         this.lastName = lastName;
     }
 
-    //to do: need locationManager attribute in Employee table
-    public void addLocationManager(LocationManager lm) {
-        locationManagers.add(lm);
-        lm.setOwner(this);
-    }
-
-    public void removeLocationManager(LocationManager lm) {
-        locationManagers.remove(lm);
-        lm.setOwner(null);
-    }
-
-    public List<LocationManager> getLocationManagers() {
-        return locationManagers;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,12 +68,11 @@ public class Owner {
         Owner owner = (Owner) o;
         return ownerId == owner.ownerId 
             && firstName == owner.firstName
-            && lastName == owner.lastName 
-            && Objects.equals(locationManagers, owner.locationManagers);
+            && lastName == owner.lastName;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, firstName, lastName, locationManagers);
+        return Objects.hash(ownerId, firstName, lastName);
     }
 }

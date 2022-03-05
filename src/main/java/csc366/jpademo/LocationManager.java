@@ -12,15 +12,8 @@ public class LocationManager {
     @Id
     private long employeeId;
 
-    @Column(name="locationId")
-    private int locationId;
-
     @Column(name="bonus")
     private int bonus;
-
-    @ManyToOne
-    @JoinColumn(name="ownerId", nullable=false)
-    private Owner owner;
 
     @OneToMany(mappedBy="manager",
             cascade = CascadeType.ALL,
@@ -29,17 +22,20 @@ public class LocationManager {
     private List<Employee> employees = new ArrayList<>();
 
     @OneToOne(orphanRemoval = false,
+            optional = false,
             fetch = FetchType.LAZY)
     private Location location;
 
     @OneToMany(mappedBy="manager")
     private List<Shift> shiftsCreated = new ArrayList<Shift>();
 
-    public LocationManager(int employeeId, int locationId, int bonus) {
+    public LocationManager(long employeeId, Location location, int bonus) {
         this.employeeId = employeeId;
-        this.locationId = locationId;
+        this.location = location;
         this.bonus = bonus;
     }
+
+    public LocationManager() {}
 
     public long getEmployeeId() {
         return this.employeeId;
@@ -49,12 +45,12 @@ public class LocationManager {
         this.employeeId = employeeId;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public Location getLocation() {
+        return this.location;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public int getBonus() {
@@ -76,14 +72,6 @@ public class LocationManager {
         e.setLocationManager(null);
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
     public void addShift(Shift shift) {
         this.getShifts().add(shift);
         shift.setManager(this);
@@ -103,14 +91,13 @@ public class LocationManager {
         if (o == null || getClass() != o.getClass()) return false;
         LocationManager locationManager = (LocationManager) o;
         return employeeId == locationManager.employeeId
-            && locationId == locationManager.locationId
+            && location == locationManager.location
             && bonus == locationManager.bonus
-            && Objects.equals(owner, locationManager.owner)
             && Objects.equals(employees, locationManager.employees);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, locationId, bonus, owner, employees);
+        return Objects.hash(employeeId, location, bonus, employees);
     }
 }

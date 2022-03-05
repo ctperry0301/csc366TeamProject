@@ -39,8 +39,8 @@ public class Employee {
     @OneToMany(mappedBy = "worker")
     private List<Shift> shifts = new ArrayList<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="managerId", nullable=false)
+    @ManyToOne
+    @JoinColumn(name="managerId")
     private LocationManager manager;
 
     public Employee(String firstName, String lastName, Date startDate, Long SSN) {
@@ -50,9 +50,12 @@ public class Employee {
         this.SSN = SSN;
     }
 
+    public Employee() {}
+
     public Long getEmployeeId() {
         return employeeId;
     }
+
     public void setId(Long employeeId) {
         this.employeeId = employeeId;
     }
@@ -87,7 +90,6 @@ public class Employee {
     public void setSSN(Long SSN) {
         this.SSN = SSN;
     }
-
 
     public void addPaycheck(Paycheck p) {
         paychecks.add(p);
@@ -133,6 +135,7 @@ public class Employee {
           ", lastName='" + lastName + '\'' +
           ", startDate=" + startDate +
           ", SSN=" + SSN +
+          ", shifts" + shifts.toString() +
           '}';
     }
 
