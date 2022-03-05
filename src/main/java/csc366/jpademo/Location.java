@@ -46,17 +46,14 @@ public class Location {
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
-    @OneToMany(mappedBy="Location",
+    @OneToMany(mappedBy="location",
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
     private List<Receipt> receipts;
 
     // One location has zero to many SupplyDetail
-    @OneToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="location")
     private List<SupplyDetail> supplyDetails;
 
     // Many Locations sell many products
