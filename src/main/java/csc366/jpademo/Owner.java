@@ -14,8 +14,9 @@ import javax.persistence.*;
 )
 
 public class Owner {
-    @Column(name="ownerId")
-    private int ownerId;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long ownerId;
 
     @Column(name="firstName")
     private String firstName;
@@ -39,17 +40,13 @@ public class Owner {
     private List<LocationManager> locationManagers = new ArrayList<>();
     */
 
-    public Owner(int ownerId, String firstName, String lastName) {
-        this.ownerId = ownerId;
+    public Owner(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public int getOwnerId() {
-        return ownerId;
-    }
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public long getOwnerId() {
+        return this.ownerId;
     }
 
     public String getFirstName() {

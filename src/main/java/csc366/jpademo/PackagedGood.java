@@ -10,26 +10,23 @@ import javax.persistence.*;
 @Entity  
 @Table(
     name = "PackagedGood",
-    uniqueConstraints = @UniqueConstraint(columnNames={"PackagedGoodsId"})
+    uniqueConstraints = @UniqueConstraint(columnNames={"packagedGoodId"})
 )
 
 public class PackagedGood {
-    @Column(name="PackagedGoodId")
-    private int packagedGoodId;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long packagedGoodId;
 
     @Column(name="Name")
     private String name;
 
-    public PackagedGood(int packagedGoodId, String name) {
-        this.packagedGoodId = packagedGoodId;
+    public PackagedGood(String name) {
         this.name = name;
     }
 
-    public int getPackagedGoodId() {
-        return packagedGoodId;
-    }
-    public void setPackagedGoodId(int packagedGoodId) {
-        this.packagedGoodId = packagedGoodId;
+    public long getPackagedGoodId() {
+        return this.packagedGoodId;
     }
 
     public String getName() {

@@ -54,7 +54,7 @@ public class ProductUnitTests {
     @Test
     @Order(1)
     public void testSaveProduct() {
-        Product product2 = productRepository.findByName("test");
+        Product product2 = productRepository.findByProductName("test");
 
         log.info(product2.toString());
 
@@ -66,7 +66,7 @@ public class ProductUnitTests {
     @Test
     @Order(2)
     public void testGetProduct() {
-        Product product2 = productRepository.findByName("test");
+        Product product2 = productRepository.findByProductName("test");
         assertNotNull(product);
         assertEquals(product2.getProductName(), product.getProductName());
         assertEquals(product2.getPrice(), product.getPrice());
@@ -88,7 +88,7 @@ public class ProductUnitTests {
     @Test
     @Order(5)
     public void testDeletByProductId() {
-        Product e = productRepository.findByName("test");
+        Product e = productRepository.findByProductName("test");
         productRepository.deleteById(e.getProductId());
         productRepository.flush();
     }
@@ -98,13 +98,6 @@ public class ProductUnitTests {
     public void testJpqlFinder() {
         Product e = productRepository.findByNameJpql("test");
         assertEquals(e.getProductName(), product.getProductName());
-    }
-
-    @Test
-    @Order(7)
-    public void testSqlFinder() {
-        Product p = productRepository.findByNameSql("test");
-        assertEquals(p.getProductName(), product.getProductName());
     }
 
 }

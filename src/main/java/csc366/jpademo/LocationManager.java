@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 public class LocationManager {
     @Id
-    private int employeeId;
+    private long employeeId;
 
     @Column(name="locationId")
     private int locationId;
@@ -28,6 +28,10 @@ public class LocationManager {
             fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
+    @OneToOne(orphanRemoval = false,
+            fetch = FetchType.LAZY)
+    private Location location;
+
     @OneToMany(mappedBy="manager")
     private List<Shift> shiftsCreated = new ArrayList<Shift>();
 
@@ -37,8 +41,8 @@ public class LocationManager {
         this.bonus = bonus;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public long getEmployeeId() {
+        return this.employeeId;
     }
 
     public void setEmployeeId(int employeeId) {
