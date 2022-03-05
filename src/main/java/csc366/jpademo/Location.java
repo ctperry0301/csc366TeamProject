@@ -1,4 +1,6 @@
-package csc366;
+package csc366.jpademo;
+import csc366.jpademo.SupplyDetail;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +16,9 @@ import javax.persistence.*;
 )
 
 public class Location {
-    @Column(name="locationId")
-    private int locationId;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long locationId;
 
     @Column(name="address")
     private String address;
@@ -43,41 +46,35 @@ public class Location {
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
-    @OneToMany(mappedBy="Location",
+    @OneToMany(mappedBy="location",
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
     private List<Receipt> receipts;
 
-    // One location has zero to many SupplyDetails
-    @OneToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
-    private List<SupplyDetails> supplyDetails;
+    // One location has zero to many SupplyDetail
+    @OneToMany(mappedBy="location")
+    private List<SupplyDetail> supplyDetails;
 
     // Many Locations sell many products
-    @ManyToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "LocationProducts", 
+        joinColumns = @JoinColumn(name = "products"), 
+        inverseJoinColumns = @JoinColumn(name = "locations"))
     private List<Product> products;
     
 
-    // Add relationship to Product, SupplyDetails, LocationManager, and Supplier
+    // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
-    public Location(int locationId, String address, LocationManager locationManager, Date openDate) {
-        this.locationId = locationId;
+    public Location(String address, LocationManager locationManager, Date openDate) {
         this.address = address;
         this.locationManager = locationManager;
         this.openDate = openDate;
     }
 
-    public int getLocationId() {
+    public long getLocationId() {
         return locationId;
-    }
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
     }
 
     public String getAddress() {

@@ -31,6 +31,7 @@ import javax.validation.constraints.NotNull;
 public class PurchasedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long purchasedItemId;
 
     @ManyToOne
     private Product product;
@@ -69,6 +70,10 @@ public class PurchasedItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getId() {
+        return this.purchasedItemId;
     }
 
     @Override

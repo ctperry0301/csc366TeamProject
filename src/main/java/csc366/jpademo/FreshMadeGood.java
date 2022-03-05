@@ -1,32 +1,41 @@
-package csc366;
+package csc366.jpademo;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 
 import javax.persistence.*;
 
 
 @Entity  
-@Table(
-    name = "FreshMadeGood",
-    uniqueConstraints = @UniqueConstraint(columnNames={"FreshMadeGoodId"})
-)
-
 public class FreshMadeGood {
-    @Column(name="FreshMadeGoodId")
-    private int freshMadeGoodId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long freshMadeGoodId;
 
     @Column(name="Name")
     private String name;
 
-    public FreshMadeGood(int freshMadeGoodId, String name) {
-        this.freshMadeGoodId = freshMadeGoodId;
+    @ManyToMany
+    @JoinTable(
+      name = "FreshMadeGoodIngredient",
+      joinColumns = @JoinColumn(name = "ingredients"),
+      inverseJoinColumns = @JoinColumn(name = "goods"))
+    List<Ingredient> ingredients;
+
+    public FreshMadeGood(String name) {
         this.name = name;
     }
 
-    public int getFreshMadeGoodId() {
-        return freshMadeGoodId;
+    public long getFreshMadeGoodId() {
+        return this.freshMadeGoodId;
     }
     public void setFreshMadeGoodId(int freshMadeGoodId) {
         this.freshMadeGoodId = freshMadeGoodId;

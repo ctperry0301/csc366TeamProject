@@ -51,7 +51,7 @@ public class ShiftTest {
     private ShiftRepository shiftRepo;
 
     private final LocationManager manager = new LocationManager(1, 1, 500);
-    private final Employee worker = new Employee();
+    private final Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(12345));
 	private final Shift shift = new Shift(new Date(), new Date(), worker, manager);
 
     @BeforeEach

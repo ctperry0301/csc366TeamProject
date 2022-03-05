@@ -36,7 +36,10 @@ public class Employee {
             fetch = FetchType.LAZY)
     private List<Paycheck> paychecks = new ArrayList<>();
 
-    @ManyToOne
+    @OneToMany(mappedBy = "worker")
+    private List<Shift> shifts = new ArrayList<>();
+
+    @ManyToOne(optional = false)
     @JoinColumn(name="managerId", nullable=false)
     private LocationManager manager;
 
@@ -100,10 +103,27 @@ public class Employee {
         return this.paychecks;
     }
 
-    public void setLocationManager(LocationManager managerId) {
-        this.manager = managerId;
+    public List<Shift> getShifts() {
+        return this.shifts;
     }
 
+    public void addShift(Shift shift) {
+        if (shift != null) {
+            shift.setWorker(this);
+        }
+    }
+
+    public void removeShift(Shift shift) {
+        if (shift != null) {
+            shifts.remove(shift);
+        }
+    }
+
+    public void setLocationManager(LocationManager manager) {
+        if (manager != null) {
+            this.manager = manager;
+        }
+    }
 
     @Override
     public String toString() {

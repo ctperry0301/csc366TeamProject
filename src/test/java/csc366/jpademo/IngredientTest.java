@@ -45,14 +45,14 @@ import org.slf4j.LoggerFactory;
 public class IngredientTest {
 
     private final static Logger log = LoggerFactory.getLogger(IngredientTest.class);
-    
+
     @Autowired
     private IngredientRepository ingredientRepo;
 
     private final Ingredient ingredient = new Ingredient("Carrot");
-    private final SupplyDetail detail = new SupplyDetail(); 
-    private final FreshMadeGood good = new FreshMadeGood(); 
-    
+    private final SupplyDetail detail = new SupplyDetail();
+    private final FreshMadeGood good = new FreshMadeGood("bread");
+
     @BeforeEach
     private void setup() {
 		ingredientRepo.saveAndFlush(ingredient);

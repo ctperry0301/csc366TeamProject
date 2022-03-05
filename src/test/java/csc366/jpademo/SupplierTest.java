@@ -47,7 +47,7 @@ public class SupplierTest {
 
   private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
 
-  private final SupplyDetails s1 = new SupplyDetails(10, 12345678910L, 7, 12345678910L,   Date.valueOf("2022-01-02"), true); // "reference" person
+  private final SupplyDetail s1 = new SupplyDetail(10, 12345678910L, 7, 12345678910L,   Date.valueOf("2022-01-02"), true); // "reference" person
 
   @BeforeEach
   private void setup() {
@@ -71,7 +71,7 @@ public class SupplierTest {
   @Test
   @Order(2)
   public void testSupplyOrderId() {
-    SupplyDetails s2 = new SupplyDetails(10, 2345678L, 8, 2345679L,   Date.valueOf("2022-01-03"), true); // "reference" person
+    SupplyDetail s2 = new SupplyDetail(10, 2345678L, 8, 2345679L,   Date.valueOf("2022-01-03"), true); // "reference" person
 
     assertNotNull(s2);
     assertEquals(s1.getSupplyOrderId(), s2.getSupplyOrderId());
