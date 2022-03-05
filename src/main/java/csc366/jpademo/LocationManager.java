@@ -28,6 +28,10 @@ public class LocationManager {
             fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
+    @OneToOne(orphanRemoval = false,
+            fetch = FetchType.LAZY)
+    private Location location;
+
     @OneToMany(mappedBy="manager")
     private List<Shift> shiftsCreated = new ArrayList<Shift>();
 

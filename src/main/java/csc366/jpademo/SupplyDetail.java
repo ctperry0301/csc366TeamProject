@@ -2,14 +2,21 @@ package csc366.jpademo;
 
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 
@@ -41,6 +48,18 @@ public class SupplyDetail {
 
   @Column(name="delivered")
   private Boolean delivered;
+
+  @ManyToMany
+  @JoinTable(
+    name = "SupplyDetailIngredient",
+    joinColumns = @JoinColumn(name = "ingredients"),
+    inverseJoinColumns = @JoinColumn(name = "supplyDetails"))
+  List<Ingredient> ingredients;
+
+  @OneToMany(cascade = CascadeType.ALL,
+    orphanRemoval = false,
+    fetch = FetchType.LAZY)
+  private List<Location> locations;
 
   public SupplyDetail() { }
 

@@ -3,6 +3,13 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 
 import javax.persistence.*;
 
@@ -15,6 +22,13 @@ public class FreshMadeGood {
 
     @Column(name="Name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+      name = "FreshMadeGoodIngredient",
+      joinColumns = @JoinColumn(name = "ingredients"),
+      inverseJoinColumns = @JoinColumn(name = "goods"))
+    List<Ingredient> ingredients;
 
     public FreshMadeGood(String name) {
         this.name = name;
