@@ -24,6 +24,8 @@ public class LocationManager {
     @OneToOne(orphanRemoval = false,
             optional = false,
             fetch = FetchType.LAZY)
+    @JoinColumn(name="location",
+            nullable=false)
     private Location location;
 
     @OneToMany(mappedBy="manager")

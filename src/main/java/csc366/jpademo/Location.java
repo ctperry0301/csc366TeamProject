@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity  
@@ -34,17 +35,11 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "ownerId")
     private Owner owner;
-
-    /* the following line should be added to LocationManager.java:
-    @OneToOne
-    @JoinColumn(name = "owner", referencedColumnName = "ownerId")
-    private Location location;
-    */
     
     // the following line established the one to one relationship between Location and LocationManager
+    @NotNull
     @OneToOne(mappedBy = "location",
-            optional = false
-    )
+            optional = false)
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
@@ -59,17 +54,11 @@ public class Location {
     private List<SupplyDetail> supplyDetails;
 
     // Many Locations sell many products
-<<<<<<< HEAD
-    @ManyToMany(mappedBy="Location",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-=======
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "LocationProducts", 
         joinColumns = @JoinColumn(name = "products"), 
         inverseJoinColumns = @JoinColumn(name = "locations"))
->>>>>>> af5d8948ccec3c70acd2b82e17b9c3bdbddd89ed
     private List<Product> products;
     
 

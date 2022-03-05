@@ -27,14 +27,7 @@ public class Owner {
     // one owner owns many locations (the location table column owner references
     // ownerId)
     @OneToMany(mappedBy = "owner")
-    private List<Location> locations;
-
-    /*@OneToMany(mappedBy="Owner",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
-    private List<LocationManager> locationManagers = new ArrayList<>();
-    */
+    private List<Location> locations = new ArrayList<>();
 
     public Owner(String firstName, String lastName) {
         this.firstName = firstName;
@@ -42,6 +35,15 @@ public class Owner {
     }
 
     public Owner() {}
+
+    public void addLocation(Location l){
+        locations.add(l);
+        l.setOwner(this);
+    }
+
+    public List<Location> getLocations(){
+        return locations;
+    }
 
     public long getOwnerId() {
         return this.ownerId;
