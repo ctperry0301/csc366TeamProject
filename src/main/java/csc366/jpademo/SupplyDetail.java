@@ -60,6 +60,9 @@ public class SupplyDetail {
   // @JoinColumn(name = "employee_id", nullable=true)
   private Location location;
 
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  private Supplier supplier;
+
   public SupplyDetail() { }
 
   public SupplyDetail(Integer ingredientQuantity, Long ingredientId, Integer packagedGoodsQuantity, Long packagedGoodsId, Date deliveryDate, Boolean delivered) {
