@@ -55,7 +55,6 @@ public class IngredientTest {
 
     @BeforeEach
     private void setup() {
-		ingredientRepo.saveAndFlush(ingredient);
 		ingredient.addSupplyDetail(detail);
 		ingredient.addGood(good);
 		ingredientRepo.saveAndFlush(ingredient);
@@ -78,7 +77,6 @@ public class IngredientTest {
 		Ingredient i = ingredientRepo.findByName("Carrot");
         SupplyDetail s = new ArrayList<SupplyDetail>(i.getSupplyDetails()).get(0);  // get an address
 		i.removeSupplyDetail(s);
-		ingredientRepo.save(i);
 		assertEquals(i.getSupplyDetails().size(), 0);
         log.info(i.toString());
     }
@@ -101,7 +99,6 @@ public class IngredientTest {
 		log.info(i.toString());
 
 		ingredientRepo.updateName("Carrot", "apple");
-		ingredientRepo.saveAndFlush(i);
 
 		i = ingredientRepo.findByName("apple");
 		assertNotNull(i);
