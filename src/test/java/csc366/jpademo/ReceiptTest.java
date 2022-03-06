@@ -62,15 +62,29 @@ public class ReceiptTest {
     @Autowired
     private OwnerRepository ownerRepo;
 
+    @Autowired
+    private PurchasedItemRepository purchasedRepo;
+
+    @Autowired
+    private ProductRepository productRepo;
+
     private final Receipt receipt = new Receipt(LocalDateTime.now());
     private final Customer customer = new Customer("first", "last");
     private Location location = new Location("addr", new java.sql.Date(1000000));
     private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
     private final Owner owner = new Owner("owner", "name");
+    private PurchasedItem item = new PurchasedItem(2);
+    private final Product product = new Product("thing", Float.valueOf("33.3"));
     private LocationManager locationManager = null;
 
     @BeforeEach
     private void setup() {
+		productRepo.saveAndFlush(product);
+		item.setProduct(product);
+		item.setReceipt(receipt);
+		receipt.setPurchasedItem(item);
+		item = purchasedRepo.save(item);
+		purchasedRepo.saveAndFlush(item);
 		customerRepo.saveAndFlush(customer);
 		ownerRepo.saveAndFlush(owner);
 		receipt.setCustomer(customer);
