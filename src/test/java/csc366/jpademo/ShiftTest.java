@@ -66,7 +66,7 @@ public class ShiftTest {
     private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
     private Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(123456));
 	private Shift shift = null;
-	private final Location location = new Location("addr", new java.sql.Date(1000000));
+	private Location location = new Location("addr", new java.sql.Date(1000000));
 	private final Owner owner = new Owner("owner", "name");
 
     @BeforeEach
@@ -75,8 +75,9 @@ public class ShiftTest {
 		empRepo.saveAndFlush(managerEmp);
 		empRepo.saveAndFlush(worker);
 		location.setOwner(owner);
-		locationRepo.saveAndFlush(location);
 		manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
+		location.setLocationManager(manager);
+		location = locationRepo.save(location);
 		manager.addEmployee(worker);
 		managerRepo.saveAndFlush(manager);
 		shift = new Shift(new Date(), new Date(), worker, manager);
