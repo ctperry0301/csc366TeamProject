@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity  
@@ -26,7 +27,9 @@ public class Owner {
 
     // one owner owns many locations (the location table column owner references
     // ownerId)
+    @NotNull
     @OneToMany(mappedBy = "owner")
+    @Column(nullable = false)
     private List<Location> locations = new ArrayList<>();
 
     public Owner(String firstName, String lastName) {

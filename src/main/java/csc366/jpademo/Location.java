@@ -32,8 +32,9 @@ public class Location {
     private Date openDate;
 
     // One location has one Owner
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "owner", referencedColumnName = "ownerId")
+    @JoinColumn(name = "owner", referencedColumnName = "ownerId", nullable = false)
     private Owner owner;
     
     // the following line established the one to one relationship between Location and LocationManager
