@@ -50,6 +50,8 @@ public class Shift {
         this.worker.addShift(this);
     }
 
+    public Shift() {}
+
     public Shift(Date startTime, Date endTime, boolean worked, Employee worker, LocationManager manager) {
 	    this.startTime = startTime;
 	    this.endTime = endTime;

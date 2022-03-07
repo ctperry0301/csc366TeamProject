@@ -2,6 +2,7 @@ package csc366.jpademo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,14 +47,38 @@ import org.slf4j.LoggerFactory;
 })
 @TestMethodOrder(OrderAnnotation.class)
 
-public class LocationManagerTest {
+public class OwnerTest {
 
-    private final static Logger log = LoggerFactory.getLogger(LocationManagerTest.class);
+    private final static Logger log = LoggerFactory.getLogger(OwnerTest.class);
 
     @Autowired
-    private LocationManagerRepository locationManagerRepository;
+    private OwnerRepository ownerRepository;
     
-    // private final LocationManager locationManager = new LocationManager(0, 0, 500);
+    private final Owner owner1 = new Owner("Nate", "Holland");
+    private final Owner owner2 = new Owner("Tom", "Holland");
 
-    
+    @BeforeEach
+    private void setup() {
+        ownerRepository.saveAndFlush(owner1);
+        ownerRepository.saveAndFlush(owner2);
+    }
+
+    // test multiple owners are unique entries
+    @Test
+    @Order(1)
+    public void testMultipleOwners() {
+
+        log.info(owner1.toString());
+        log.info(owner2.toString());
+
+        assertNotNull(owner1);
+        assertNotNull(owner2);
+        assertFalse(owner1.equals(owner2));
+    }
+
+    //test get list of location managers
+
+    //test add location manager
+
+    //test remove location manager
 }
