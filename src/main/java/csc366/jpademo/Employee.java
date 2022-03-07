@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(
@@ -31,9 +32,7 @@ public class Employee {
     private Long SSN;
 
     @OneToMany(mappedBy="employee",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL)
     private List<Paycheck> paychecks = new ArrayList<>();
 
     @OneToMany(mappedBy = "worker")

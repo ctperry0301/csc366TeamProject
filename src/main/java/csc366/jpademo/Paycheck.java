@@ -17,7 +17,7 @@ public class Paycheck {
   private float payRate;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "employee_id", nullable=true)
+  @JoinColumn(name = "employee_id", nullable=false)
   private Employee employee;
 
   public Paycheck() {}
