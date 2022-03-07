@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import javax.persistence.*;
 
@@ -25,7 +26,7 @@ public class LocationManager {
             optional = false,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    @JoinColumn(name="location",
+    @JoinColumn(name="locationId",
             nullable=false)
     private Location location;
 
@@ -97,6 +98,14 @@ public class LocationManager {
             && location == locationManager.location
             && bonus == locationManager.bonus
             && Objects.equals(employees, locationManager.employees);
+    }
+
+    //imcomplete
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(",", LocationManager.class.getSimpleName() + "[", "]");
+        sj.add(Long.toString(employeeId)).add(Integer.toString(bonus)).add(location.toString());
+        return sj.toString();
     }
 
     @Override

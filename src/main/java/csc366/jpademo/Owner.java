@@ -27,7 +27,7 @@ public class Owner {
 
     // one owner owns many locations (the location table column owner references
     // ownerId)
-    @NotNull
+    //@NotNull
     @OneToMany(mappedBy = "owner")
     @Column(nullable = false)
     private List<Location> locations = new ArrayList<>();
@@ -44,8 +44,14 @@ public class Owner {
         l.setOwner(this);
     }
 
-    public List<Location> getLocations(){
-        return locations;
+    //will raise constraints, location cannot have null owner. Maybe we shouldnt have this?
+    public void removeLocation(Location l){
+        locations.remove(l);
+        l.setOwner(null);
+    }
+
+    public void addOwnersLocation(Location l){
+        locations.add(l);
     }
 
     public long getOwnerId() {
@@ -64,6 +70,10 @@ public class Owner {
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Location> getLocations() {
+        return this.locations;
     }
 
     @Override
