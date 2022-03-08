@@ -38,8 +38,7 @@ public class PurchasedItem {
     private Product product;
 
     @NotNull
-    @OneToOne(optional = false,
-            cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Receipt receipt;
 
     private Integer quantity; // note: no annotation, still included in underlying table

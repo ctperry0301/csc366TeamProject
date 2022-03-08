@@ -36,11 +36,13 @@ public class PackagedGood {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         PackagedGood pg = (PackagedGood) o;
         return packagedGoodId == pg.packagedGoodId
-            && name == pg.name;
+                && name == pg.name;
     }
 
     @Override

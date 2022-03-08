@@ -10,8 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -43,10 +45,11 @@ public class Receipt {
     private Location location;
 
     @NotNull
-    @OneToOne(mappedBy = "receipt")
+    @OneToMany(mappedBy = "receipt", cascade = CascadeType.REMOVE)
     private PurchasedItem purchasedItem;
 
-    public Receipt() {}
+    public Receipt() {
+    }
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;
