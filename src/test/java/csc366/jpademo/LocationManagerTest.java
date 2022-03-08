@@ -53,7 +53,7 @@ public class LocationManagerTest {
     @Autowired
     private LocationManagerRepository locationManagerRepository;
     
-    private final LocationManager locationManager = new LocationManager(0, 0, 500);
+    // private final LocationManager locationManager = new LocationManager(0, 0, 500);
 
     
 }

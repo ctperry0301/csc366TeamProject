@@ -100,11 +100,4 @@ public class ProductUnitTests {
         assertEquals(e.getProductName(), product.getProductName());
     }
 
-    @Test
-    @Order(7)
-    public void testSqlFinder() {
-        Product p = productRepository.findByNameSql("test");
-        assertEquals(p.getProductName(), product.getProductName());
-    }
-
 }

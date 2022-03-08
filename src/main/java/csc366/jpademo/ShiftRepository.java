@@ -15,9 +15,9 @@ public interface ShiftRepository extends JpaRepository<Shift, Long>{
     @Query("from Shift s where s.worked = FALSE")
     List<Shift> findUnworkedShifts();
 
-    @Modifying
-    @Query("update Shift s set s.worked = TRUE where s.shiftId = :shiftId")
-    void markShiftAsWorked(@Param("shiftId") Long shiftId);
+    // @Modifying(clearAutomatically = true)
+    // @Query("update Shift s set s.worked = TRUE where s.shiftId = :shiftId")
+    // void markShiftAsWorked(@Param("shiftId") Long shiftId);
 
     Shift findByWorker(Employee worker);
 

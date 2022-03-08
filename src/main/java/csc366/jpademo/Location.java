@@ -5,8 +5,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity  
@@ -31,18 +33,15 @@ public class Location {
     private Date openDate;
 
     // One location has one Owner
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "owner", referencedColumnName = "ownerId")
+    @JoinColumn(name = "owner", referencedColumnName = "ownerId", nullable = false)
     private Owner owner;
-
-    /* the following line should be added to LocationManager.java:
-    @OneToOne
-    @JoinColumn(name = "owner", referencedColumnName = "ownerId")
-    private Location location;
-    */
     
     // the following line established the one to one relationship between Location and LocationManager
-    @OneToOne(mappedBy = "location")
+    @NotNull
+    @OneToOne(mappedBy = "location",
+            optional = false)
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
@@ -50,7 +49,16 @@ public class Location {
             cascade = CascadeType.ALL,
             orphanRemoval = false,
             fetch = FetchType.LAZY)
-    private List<Receipt> receipts;
+    private List<Receipt> receipts = new ArrayList<>();
+
+    public void addReceipt(Receipt r) {
+        receipts.add(r);
+        r.setLocation(this);
+    }
+
+    public List<Receipt> getReceipts() {
+        return this.receipts;
+    }
 
     // One location has zero to many SupplyDetail
     @OneToMany(mappedBy="location")
@@ -67,11 +75,12 @@ public class Location {
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
-    public Location(String address, LocationManager locationManager, Date openDate) {
+    public Location(String address, Date openDate) {
         this.address = address;
-        this.locationManager = locationManager;
         this.openDate = openDate;
     }
+
+    public Location() {}
 
     public long getLocationId() {
         return locationId;
@@ -87,8 +96,8 @@ public class Location {
     public LocationManager getLocationManager() {
         return locationManager;
     }
-    public void setLocationManager(LocationManager locationManager) {
-        this.locationManager = locationManager;
+    public void setLocationManager(LocationManager lm) {
+        this.locationManager = lm;
     }
 
     public Date getOpenDate() {
@@ -97,6 +106,14 @@ public class Location {
 
     public void setOpenDate(Date openDate) {
         this.openDate = openDate;
+    }
+
+    public Owner getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(Owner o) {
+        this.owner = o;
     }
 
     @Override
@@ -108,6 +125,14 @@ public class Location {
             && address == location.address 
             && locationManager == location.locationManager
             && openDate == location.openDate;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(",", Location.class.getSimpleName() + "[", "]");
+        sj.add(Long.toString(locationId)).add(address);
+        //.add(locationManager.toString());
+        return sj.toString();
     }
 
     @Override

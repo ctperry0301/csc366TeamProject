@@ -23,6 +23,9 @@ public class Supplier {
   @Column(name="supplierAddress")
   private String supplierAddress;
 
+  @OneToMany(mappedBy = "supplier")
+  private List<SupplyDetail> supplyDetails;
+
   public Supplier() { }
 
   public Supplier(String supplierAddress) {

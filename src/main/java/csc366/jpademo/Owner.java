@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity  
@@ -26,23 +27,31 @@ public class Owner {
 
     // one owner owns many locations (the location table column owner references
     // ownerId)
+    //@NotNull
     @OneToMany(mappedBy = "owner")
-    private List<Location> locations;
-
-    // one owner manages many LocationManagers
-    @OneToMany(mappedBy = "owner")
-    private List<LocationManager> locationManagers;
-
-    /*@OneToMany(mappedBy="Owner",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
-    private List<LocationManager> locationManagers = new ArrayList<>();
-    */
+    @Column(nullable = false)
+    private List<Location> locations = new ArrayList<>();
 
     public Owner(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Owner() {}
+
+    public void addLocation(Location l){
+        locations.add(l);
+        l.setOwner(this);
+    }
+
+    //will raise constraints, location cannot have null owner. Maybe we shouldnt have this?
+    public void removeLocation(Location l){
+        locations.remove(l);
+        l.setOwner(null);
+    }
+
+    public void addOwnersLocation(Location l){
+        locations.add(l);
     }
 
     public long getOwnerId() {
@@ -63,19 +72,8 @@ public class Owner {
         this.lastName = lastName;
     }
 
-    //to do: need locationManager attribute in Employee table
-    public void addLocationManager(LocationManager lm) {
-        locationManagers.add(lm);
-        lm.setOwner(this);
-    }
-
-    public void removeLocationManager(LocationManager lm) {
-        locationManagers.remove(lm);
-        lm.setOwner(null);
-    }
-
-    public List<LocationManager> getLocationManagers() {
-        return locationManagers;
+    public List<Location> getLocations() {
+        return this.locations;
     }
 
     @Override
@@ -85,12 +83,11 @@ public class Owner {
         Owner owner = (Owner) o;
         return ownerId == owner.ownerId 
             && firstName == owner.firstName
-            && lastName == owner.lastName 
-            && Objects.equals(locationManagers, owner.locationManagers);
+            && lastName == owner.lastName;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, firstName, lastName, locationManagers);
+        return Objects.hash(ownerId, firstName, lastName);
     }
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.UniqueConstraint;
@@ -38,14 +39,25 @@ public class Receipt {
     @ManyToOne
     private Customer customer;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location", 
+                referencedColumnName = "locationId", 
+                nullable = false)
     private Location location;
 
-    public Receipt() {
-    }
+    @NotNull
+    @OneToOne(mappedBy = "receipt")
+    private PurchasedItem purchasedItem;
+
+    public Receipt() {}
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public void setPurchasedItem(PurchasedItem purchasedItem) {
+        this.purchasedItem = purchasedItem;
     }
 
     public Long getReceiptId() {
