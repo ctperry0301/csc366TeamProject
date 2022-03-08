@@ -92,7 +92,7 @@ public class ReceiptTest {
 		employeeRepo.saveAndFlush(managerEmp);
 		locationManager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
 		location.setLocationManager(locationManager);
-		location.setOwner(owner);
+    owner.addLocation(location);
 		location = locationRepo.save(location);
 		owner.addLocation(location);
 		managerRepo.saveAndFlush(locationManager);

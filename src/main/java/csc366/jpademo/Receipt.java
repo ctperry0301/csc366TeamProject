@@ -41,7 +41,11 @@ public class Receipt {
     @ManyToOne
     private Customer customer;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location", 
+                referencedColumnName = "locationId", 
+                nullable = false)
     private Location location;
 
     @NotNull

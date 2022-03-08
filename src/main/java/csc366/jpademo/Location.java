@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,7 +43,16 @@ public class Location {
 
     // One location has zero to many Receipts attached to it
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-    private List<Receipt> receipts;
+    private List<Receipt> receipts = new ArrayList<>();
+
+    public void addReceipt(Receipt r) {
+        receipts.add(r);
+        r.setLocation(this);
+    }
+
+    public List<Receipt> getReceipts() {
+        return this.receipts;
+    }
 
     // One location has zero to many SupplyDetail
     @OneToMany(mappedBy = "location")
@@ -79,8 +89,8 @@ public class Location {
         return locationManager;
     }
 
-    public void setLocationManager(LocationManager locationManager) {
-        this.locationManager = locationManager;
+    public void setLocationManager(LocationManager lm) {
+        this.locationManager = lm;
     }
 
     public Date getOpenDate() {
@@ -91,8 +101,12 @@ public class Location {
         this.openDate = openDate;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public Owner getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(Owner o) {
+        this.owner = o;
     }
 
     @Override
@@ -106,6 +120,14 @@ public class Location {
                 && address == location.address
                 && locationManager == location.locationManager
                 && openDate == location.openDate;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(",", Location.class.getSimpleName() + "[", "]");
+        sj.add(Long.toString(locationId)).add(address);
+        // .add(locationManager.toString());
+        return sj.toString();
     }
 
     @Override

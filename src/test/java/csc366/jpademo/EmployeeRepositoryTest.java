@@ -97,29 +97,21 @@ public class EmployeeRepositoryTest {
 
   @Test
   @Order(5)
-  public void testRemovePaycheck() {
-    Employee testE = employeeRepository.findByFirstName("Rohith");
-    Paycheck p = e1.getPaychecks().get(0);
-    log.warn("LSDJFKLSDJFL:SDFKSDFLSDFSD:FSD");
-    log.info(p.toString());
-    testE.removePaycheck(p);
-    employeeRepository.save(testE);
+  public void testFindByNameWithPaychecksJpql() {
+    e1.addPaycheck(p1);
+    employeeRepository.saveAndFlush(e1);
+    Employee testE = employeeRepository.findByNameWithPaychecksJpql("Rohith");
+    System.out.println(testE.getPaychecks());
+    assertEquals(e1.getPaychecks(), testE.getPaychecks());
   }
 
   @Test
   @Order(6)
-  public void testRemovePaycheckAndFlush() {
+  public void testRemovePaycheck() {
     Employee testE = employeeRepository.findByFirstName("Rohith");
     Paycheck p = e1.getPaychecks().get(0);
     testE.removePaycheck(p);
-    employeeRepository.saveAndFlush(testE);
-  }
-
-  @Test
-  @Order(7)
-  public void testFindByNameWithPaychecksJpql() {
-    Employee testE = employeeRepository.findByNameWithPaychecksJpql("Rohith");
-    assertEquals(e1.getPaychecks(), testE.getPaychecks());
+    employeeRepository.save(testE);
   }
 
 }

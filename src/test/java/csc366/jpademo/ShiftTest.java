@@ -74,7 +74,7 @@ public class ShiftTest {
 		ownerRepo.saveAndFlush(owner);
 		empRepo.saveAndFlush(managerEmp);
 		empRepo.saveAndFlush(worker);
-		location.setOwner(owner);
+		owner.addLocation(location);
 		manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
 		location.setLocationManager(manager);
 		location = locationRepo.save(location);
