@@ -63,15 +63,33 @@ public class SupplyDetail {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Supplier supplier;
 
+  @ManyToMany
+  private List<PackagedGood> packagedGoods;
+
   public SupplyDetail() { }
 
-  public SupplyDetail(Integer ingredientQuantity, Long ingredientId, Integer packagedGoodsQuantity, Long packagedGoodsId, Date deliveryDate, Boolean delivered) {
+  public SupplyDetail(Integer ingredientQuantity, List<Ingredient> ingredients, Integer packagedGoodsQuantity, List<PackagedGood> packagedGoods, Date deliveryDate, Boolean delivered) {
     this.ingredientQuantity = ingredientQuantity;
-    this.ingredientId = ingredientId;
+    this.ingredients = ingredients;
     this.packagedGoodsQuantity = packagedGoodsQuantity;
-    this.packagedGoodsId = packagedGoodsId;
+    this.packagedGoods = packagedGoods;
     this.deliveryDate = deliveryDate;
     this.delivered = delivered;
+  }
+
+  public SupplyDetail(Integer ingredientQuantity, Integer packagedGoodsQuantity, Date deliveryDate, Boolean delivered) {
+    this.ingredientQuantity = ingredientQuantity;
+    this.packagedGoodsQuantity = packagedGoodsQuantity;
+    this.deliveryDate = deliveryDate;
+    this.delivered = delivered;
+  }
+
+  public void addIngredient(Ingredient i) {
+    ingredients.add(i);
+  }
+
+  public void addPackagedGood(PackagedGood pg) {
+    packagedGoods.add(pg);
   }
 
   public Long getSupplyOrderId() {
