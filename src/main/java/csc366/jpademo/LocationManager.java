@@ -51,8 +51,8 @@ public class LocationManager {
         return this.employeeId;
     }
 
-    public void setmanagerId(int managerId) {
-        this.managerId = managerId;
+    public void setmanagerId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Location getLocation() {
