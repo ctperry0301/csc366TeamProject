@@ -79,27 +79,27 @@ public class ReceiptTest {
 
     @BeforeEach
     private void setup() {
-		productRepo.saveAndFlush(product);
-		item.setProduct(product);
-		item.setReceipt(receipt);
-		receipt.setPurchasedItem(item);
-		item = purchasedRepo.save(item);
-		purchasedRepo.saveAndFlush(item);
-		customerRepo.saveAndFlush(customer);
-		ownerRepo.saveAndFlush(owner);
-		receipt.setCustomer(customer);
+        productRepo.saveAndFlush(product);
+        item.setProduct(product);
+        item.setReceipt(receipt);
+        receipt.setPurchasedItem(item);
+        customerRepo.saveAndFlush(customer);
+        ownerRepo.saveAndFlush(owner);
+        receipt.setCustomer(customer);
 
-		employeeRepo.saveAndFlush(managerEmp);
-		locationManager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
-		location.setLocationManager(locationManager);
-    owner.addLocation(location);
-		location = locationRepo.save(location);
-		owner.addLocation(location);
-		managerRepo.saveAndFlush(locationManager);
+        employeeRepo.saveAndFlush(managerEmp);
+        locationManager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
+        location.setLocationManager(locationManager);
+        owner.addLocation(location);
+        location = locationRepo.save(location);
+        owner.addLocation(location);
+        managerRepo.saveAndFlush(locationManager);
 
-		locationRepo.saveAndFlush(location);
-		receipt.setLocation(location);
-		receiptRepo.saveAndFlush(receipt);
+        locationRepo.saveAndFlush(location);
+        receipt.setLocation(location);
+        item = purchasedRepo.save(item);
+        purchasedRepo.saveAndFlush(item);
+        receiptRepo.saveAndFlush(receipt);
     }
 
     @Test
