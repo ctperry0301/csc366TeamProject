@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.StringJoiner;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,7 +51,7 @@ public class Receipt {
 
     @NotNull
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.REMOVE)
-    private PurchasedItem purchasedItem;
+    private List<PurchasedItem> purchasedItem;
 
     public Receipt() {
     }
@@ -59,7 +60,7 @@ public class Receipt {
         this.dateTime = dateTime;
     }
 
-    public void setPurchasedItem(PurchasedItem purchasedItem) {
+    public void setPurchasedItem(List<PurchasedItem> purchasedItem) {
         this.purchasedItem = purchasedItem;
     }
 
