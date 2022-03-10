@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Table;
@@ -29,8 +30,8 @@ public class Ingredient {
     @Column(name="name")
     private String name;
 
-    @ManyToMany(mappedBy = "ingredients")
-    private Set<SupplyDetail> supplyDetails = new HashSet<SupplyDetail>();
+    @OneToOne(mappedBy="ingredientId")
+    private InventoriedIngredient inventoriedIngredient;
 
     @ManyToMany(mappedBy = "ingredients")
     private Set<FreshMadeGood> goods = new HashSet<FreshMadeGood>();
@@ -50,18 +51,6 @@ public class Ingredient {
     public Long getId() {
         return this.ingredientId;
     }
-
-    public void addSupplyDetail(SupplyDetail detail) {
-        this.getSupplyDetails().add(detail);
-    }
-
-    public void removeSupplyDetail(SupplyDetail detail) {
-        this.getSupplyDetails().remove(detail);
-    }
-
-    public Set<SupplyDetail> getSupplyDetails() {
-        return this.supplyDetails;
-    }
     
     public void addGood(FreshMadeGood good) {
         this.getGoods().add(good);
@@ -79,7 +68,6 @@ public class Ingredient {
     public String toString() {
 	    StringJoiner sj = new StringJoiner("," , Ingredient.class.getSimpleName() + "[" , "]");
 	    sj.add(this.getId().toString()).add(this.getName())
-         .add("supplyDetails="+this.getSupplyDetails().toString())
          .add("goods="+this.getGoods().toString());
 	    return sj.toString();
     }
