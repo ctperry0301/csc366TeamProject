@@ -2,6 +2,7 @@ package csc366.jpademo;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.StringJoiner;
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.UniqueConstraint;
@@ -46,18 +48,17 @@ public class Receipt {
                 nullable = false)
     private Location location;
 
-    @NotNull
-    @OneToOne(mappedBy = "receipt")
-    private PurchasedItem purchasedItem;
+    //@NotNull
+    @OneToMany(mappedBy = "receipt")
+    private List<PurchasedPackagedGood> purchasedPackagedGood;
+
+    @OneToMany(mappedBy = "receipt")
+    private List<PurchasedFreshMadeGood> purchasedFreshMadeGood;
 
     public Receipt() {}
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;
-    }
-
-    public void setPurchasedItem(PurchasedItem purchasedItem) {
-        this.purchasedItem = purchasedItem;
     }
 
     public Long getReceiptId() {

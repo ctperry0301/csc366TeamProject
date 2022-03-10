@@ -72,6 +72,11 @@ public class Location {
         inverseJoinColumns = @JoinColumn(name = "locations"))
     private List<Product> products;
     
+    @OneToMany(mappedBy="locationId")
+    private List<InventoriedIngredient> inventoriedIngredients;
+
+    @OneToMany(mappedBy="locationId")
+    private List<InventoriedPackagedGood> inventoriedPackagedGood;
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 

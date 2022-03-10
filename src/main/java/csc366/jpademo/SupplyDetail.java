@@ -31,34 +31,25 @@ public class SupplyDetail {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Long supplyOrderId;
 
-  @Column(name="ingredientId")
-  private Long ingredientId;
-
-  @Column(name="ingredientQuantity")
-  private Integer ingredientQuantity;
-
-  @Column(name="packagedGoodsId")
-  private Long packagedGoodsId;
-
-  @Column(name="packagedGoodsQuantity")
-  private Integer packagedGoodsQuantity;
-
   @Column(name="deliveryDate")
   private Date deliveryDate;
 
   @Column(name="delivered")
   private Boolean delivered;
 
-  @ManyToMany
-  @JoinTable(
-    name = "SupplyDetailIngredient",
-    joinColumns = @JoinColumn(name = "ingredients"),
-    inverseJoinColumns = @JoinColumn(name = "supplyDetails"))
-  private List<Ingredient> ingredients;
-
+  // Owning side
   @ManyToOne(fetch = FetchType.LAZY)
-  // @JoinColumn(name = "employee_id", nullable=true)
+  @JoinColumn(name = "location", 
+              referencedColumnName="locationId",
+              nullable=true)
   private Location location;
+
+  //inverse (non-owning) side
+  @OneToMany(mappedBy = "supplyDetail")
+  List<SuppliedPackagedGood> suppliedPackagedGoods;
+
+  @OneToMany(mappedBy = "supplyDetail")
+  List<SuppliedIngredient> suppliedIngredients;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Supplier supplier;
@@ -68,28 +59,19 @@ public class SupplyDetail {
 
   public SupplyDetail() { }
 
-  public SupplyDetail(Integer ingredientQuantity, List<Ingredient> ingredients, Integer packagedGoodsQuantity, List<PackagedGood> packagedGoods, Date deliveryDate, Boolean delivered) {
-    this.ingredientQuantity = ingredientQuantity;
-    this.ingredients = ingredients;
-    this.packagedGoodsQuantity = packagedGoodsQuantity;
-    this.packagedGoods = packagedGoods;
+  public SupplyDetail(List<SuppliedIngredient> suppliedIngredients, List<SuppliedPackagedGood> suppliedPackagedGoods, Date deliveryDate, Boolean delivered) {
+    this.suppliedIngredients = suppliedIngredients;
+    this.suppliedPackagedGoods = suppliedPackagedGoods;
     this.deliveryDate = deliveryDate;
     this.delivered = delivered;
   }
 
-  public SupplyDetail(Integer ingredientQuantity, Integer packagedGoodsQuantity, Date deliveryDate, Boolean delivered) {
-    this.ingredientQuantity = ingredientQuantity;
-    this.packagedGoodsQuantity = packagedGoodsQuantity;
-    this.deliveryDate = deliveryDate;
-    this.delivered = delivered;
+  public void addSuppliedIngredient(SuppliedIngredient i) {
+    suppliedIngredients.add(i);
   }
 
-  public void addIngredient(Ingredient i) {
-    ingredients.add(i);
-  }
-
-  public void addPackagedGood(PackagedGood pg) {
-    packagedGoods.add(pg);
+  public void addSuppliedPackagedGood(SuppliedPackagedGood pg) {
+    suppliedPackagedGoods.add(pg);
   }
 
   public Long getSupplyOrderId() {
@@ -100,18 +82,12 @@ public class SupplyDetail {
     return delivered;
   }
 
-  public void setSupplyOrderId(Long supplyOrderId) {
-    this.supplyOrderId = supplyOrderId;
-  }
-
   @Override
   public String toString() {
     return "SupplyDetail{" +
       "supplyOrderId=" + supplyOrderId +
-      ", ingredientId=" + ingredientId +
-      ", ingredientQuantity=" + ingredientQuantity +
-      ", packagedGoodsId=" + packagedGoodsId +
-      ", packagedGoodsQuantity=" + packagedGoodsQuantity +
+      ", suppliedPackagedGoods=" + suppliedIngredients +
+      ", suppliedIngredients=" + suppliedPackagedGoods +
       ", deliveryDate=" + deliveryDate +
       ", delivered=" + delivered +
       '}';
@@ -122,11 +98,15 @@ public class SupplyDetail {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SupplyDetail that = (SupplyDetail) o;
-    return Objects.equals(supplyOrderId, that.supplyOrderId) && Objects.equals(ingredientId, that.ingredientId) && Objects.equals(ingredientQuantity, that.ingredientQuantity) && Objects.equals(packagedGoodsId, that.packagedGoodsId) && Objects.equals(packagedGoodsQuantity, that.packagedGoodsQuantity) && Objects.equals(deliveryDate, that.deliveryDate) && Objects.equals(delivered, that.delivered);
+    return Objects.equals(supplyOrderId, that.supplyOrderId)
+         && Objects.equals(suppliedPackagedGoods, that.suppliedPackagedGoods) 
+         && Objects.equals(suppliedIngredients, that.suppliedIngredients) 
+         && Objects.equals(deliveryDate, that.deliveryDate) 
+         && Objects.equals(delivered, that.delivered);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(supplyOrderId, ingredientId, ingredientQuantity, packagedGoodsId, packagedGoodsQuantity, deliveryDate, delivered);
+    return Objects.hash(supplyOrderId, suppliedIngredients, suppliedPackagedGoods, deliveryDate, delivered);
   }
 }
