@@ -63,14 +63,6 @@ public class Location {
     // One location has zero to many SupplyDetail
     @OneToMany(mappedBy="location")
     private List<SupplyDetail> supplyDetails;
-
-    // Many Locations sell many products
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "LocationProducts", 
-        joinColumns = @JoinColumn(name = "products"), 
-        inverseJoinColumns = @JoinColumn(name = "locations"))
-    private List<Product> products;
     
     @OneToMany(mappedBy="locationId")
     private List<InventoriedIngredient> inventoriedIngredients;
