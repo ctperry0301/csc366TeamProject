@@ -40,5 +40,9 @@ public class PurchasedPackagedGood {
         this.quantity = quantity;
     }
 
+    public void setReceipt(Receipt r) {
+        this.receipt = r;
+        r.addPurchasedPackagedGood(this);
+    }
 
 }

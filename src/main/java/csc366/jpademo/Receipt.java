@@ -50,15 +50,19 @@ public class Receipt {
 
     //@NotNull
     @OneToMany(mappedBy = "receipt")
-    private List<PurchasedPackagedGood> purchasedPackagedGood;
+    private List<PurchasedPackagedGood> purchasedPackagedGoods;
 
     @OneToMany(mappedBy = "receipt")
-    private List<PurchasedFreshMadeGood> purchasedFreshMadeGood;
+    private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods;
 
     public Receipt() {}
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public void addPurchasedPackagedGood(PurchasedPackagedGood ppg) {
+        purchasedPackagedGoods.add(ppg);
     }
 
     public Long getReceiptId() {

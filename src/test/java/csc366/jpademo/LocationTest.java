@@ -78,7 +78,8 @@ public class LocationTest {
 	  private final Owner owner = new Owner("owner", "name");
     private final Receipt receipt = new Receipt(LocalDateTime.now());
     private final Receipt receipt_no_location = new Receipt(LocalDateTime.now());
-    private final PurchasedItem item1 = new PurchasedItem(5);
+    private final PackagedGood packagedGood = new PackagedGood("Sandwhich");
+    private final PurchasedPackagedGood purchasedPackagedGood = new PurchasedPackagedGood(packagedGood, receipt, 2);
 
     @BeforeEach
     private void setup() {
@@ -131,7 +132,7 @@ public class LocationTest {
   @Order(4)
   public void testAddReceipt() {
     location.addReceipt(receipt);
-    receipt.setPurchasedItem(item1);
+    purchasedPackagedGood.setReceipt(receipt);
     log.info(receipt.getLocation().toString());
     log.info(Integer.toString(location.getReceipts().size()));
     receiptRepo.save(receipt);
