@@ -47,17 +47,79 @@ public class IngredientTest {
     private final static Logger log = LoggerFactory.getLogger(IngredientTest.class);
 
     @Autowired
+    private OwnerRepository ownerRepo;
+
+    @Autowired
+    private LocationRepository locationRepo;
+
+    @Autowired
+    private LocationManagerRepository managerRepo;
+
+    @Autowired
+    private EmployeeRepository empRepo;
+
+    @Autowired
     private IngredientRepository ingredientRepo;
 
-    private final Ingredient ingredient = new Ingredient("Carrot");
-    private final SupplyDetail detail = new SupplyDetail();
+	@Autowired 
+	private InventoriedIngredientRepository inventoriedIngredientRepo;
+
+	@Autowired
+	private SupplyDetailRepository supplyDetailRepository;
+
+	private final Location loc = new Location("addr", new java.sql.Date(1000000));
+    private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
+	private LocationManager manager = new LocationManager(managerEmp.getEmployeeId(), loc, 1000);
+	private Owner owner = new Owner("owner", "name");
+
+    private final Ingredient flour = new Ingredient("Flour");
+	private final Ingredient yeast = new Ingredient("Yeast");
+	private final Ingredient salt = new Ingredient("Salt");
+    
+	private final InventoriedIngredient inventoried_flour = new InventoriedIngredient(loc, flour, 0);
+	private final InventoriedIngredient inventoried_yeast = new InventoriedIngredient(loc, yeast, 0);
+	private final InventoriedIngredient inventoried_salt = new InventoriedIngredient(loc, salt, 0);
+
+	private final SuppliedIngredient supplied_flour = new SuppliedIngredient(10, flour);
+	private final SuppliedIngredient supplied_yeast = new SuppliedIngredient(5, yeast);
+	private final SuppliedIngredient supplied_salt = new SuppliedIngredient(2, salt);
+
+	
+	private final SupplyDetail supplyDetail = new SupplyDetail();
     private final FreshMadeGood good = new FreshMadeGood("bread");
+
+
 
     @BeforeEach
     private void setup() {
-		ingredient.addSupplyDetail(detail);
-		ingredient.addGood(good);
-		ingredientRepo.saveAndFlush(ingredient);
+		//establish location, owner, and manager connections.
+		owner.addLocation(loc);
+		ownerRepo.save(owner);
+		locationRepo.save(loc);
+		empRepo.save(managerEmp);
+		managerRepo.save(manager);
+
+		ingredientRepo.save(flour);
+		ingredientRepo.save(yeast);
+		ingredientRepo.save(salt);
+
+		// In order to ensure supplied goods updates inventoried goods, we'll need to call the
+		// addSupply funciton (which will update the inventoried good quantity) then save both 
+		// after.
+		inventoried_flour.addSupply(supplied_flour);
+		inventoried_yeast.addSupply(supplied_yeast);
+		inventoried_salt.addSupply(supplied_salt);
+
+		inventoriedIngredientRepo.save(inventoried_flour);
+		inventoriedIngredientRepo.save(inventoried_yeast);
+		inventoriedIngredientRepo.save(inventoried_salt);
+
+		supplyDetail.addSuppliedIngredient(supplied_flour);
+		supplyDetail.addSuppliedIngredient(supplied_yeast);
+		supplyDetail.addSuppliedIngredient(supplied_salt);
+
+		supplyDetailRepository.save(supplyDetail);
+
     }
     
     @Test

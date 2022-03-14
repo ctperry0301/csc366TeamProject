@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(
@@ -38,6 +39,7 @@ public class SupplyDetail {
   private Boolean delivered;
 
   // Owning side
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "location", 
               referencedColumnName="locationId",

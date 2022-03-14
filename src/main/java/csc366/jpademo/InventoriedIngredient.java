@@ -50,9 +50,15 @@ public class InventoriedIngredient {
     private Location location;
 
 
-    public InventoriedIngredient(Location location, SuppliedIngredient suppliedIngredient, long quantity) {
+    public InventoriedIngredient(Location location, Ingredient ingredient, int quantity) {
         this.location = location;
-        this.suppliedIngredient = suppliedIngredient;
+        this.ingredient = ingredient;
         this.quantity = quantity;
     }
+
+    public long addSupply(SuppliedIngredient suppliedIngredient) {
+        this.quantity += suppliedIngredient.getQuantity();
+        return this.quantity;
+    }
+
 }

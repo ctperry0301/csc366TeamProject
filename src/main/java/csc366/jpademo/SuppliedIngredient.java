@@ -45,13 +45,17 @@ public class SuppliedIngredient {
     //Owning side (SuppliedIngredient contains the foreign key that
     //references InventoriedIngredient)
     @OneToOne
-    @JoinColumn(name="inventoriedIngredient",
-                referencedColumnName="inventoriedIngredientId")
-    private InventoriedIngredient inventoriedIngredient;
+    @JoinColumn(name="ingredient",
+                referencedColumnName="ingredientId")
+    private Ingredient ingredient;
 
 
-    public SuppliedIngredient(long quantity, InventoriedIngredient ingredient) {
-        this.inventoriedIngredient = ingredient;
+    public SuppliedIngredient(int quantity, Ingredient ingredient) {
+        this.ingredient = ingredient;
         this.quantity = quantity;
+    }
+
+    public long getQuantity() {
+        return this.quantity;
     }
 }

@@ -30,6 +30,14 @@ public class FreshMadeGood {
       inverseJoinColumns = @JoinColumn(name = "goods"))
     List<Ingredient> ingredients;
 
+    public void setIngredients(List<Ingredient> ingredient_lst) {
+        this.ingredients = ingredient_lst;
+    }
+
+    public void addIngredient(Ingredient i) {
+        this.ingredients.add(i);
+    }
+
     public FreshMadeGood(String name) {
         this.name = name;
     }
