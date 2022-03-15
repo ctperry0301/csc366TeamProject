@@ -63,12 +63,6 @@ public class Location {
     // One location has zero to many SupplyDetail
     @OneToMany(mappedBy="location")
     private List<SupplyDetail> supplyDetails;
-    
-    @OneToMany(mappedBy="locationId")
-    private List<InventoriedIngredient> inventoriedIngredients;
-
-    @OneToMany(mappedBy="locationId")
-    private List<InventoriedPackagedGood> inventoriedPackagedGood;
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
 
