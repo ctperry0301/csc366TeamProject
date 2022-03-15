@@ -30,7 +30,7 @@ public class PurchasedFreshMadeGood {
     Receipt receipt;
 
     //Slightly problematic, need to come back to this one.
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "freshMadeGood",
                 referencedColumnName = "freshMadeGoodId")
     FreshMadeGood freshMadeGood;

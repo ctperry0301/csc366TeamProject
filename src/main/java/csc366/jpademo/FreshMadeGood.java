@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 
@@ -29,6 +30,11 @@ public class FreshMadeGood {
       joinColumns = @JoinColumn(name = "ingredients"),
       inverseJoinColumns = @JoinColumn(name = "goods"))
     List<Ingredient> ingredients;
+
+    @NotNull
+    @OneToMany(mappedBy = "purchasedFreshMadeGood")
+    List<PurchasedFreshMadeGood> purchasedFreshMadeGoods;
+    
 
     public void setIngredients(List<Ingredient> ingredient_lst) {
         this.ingredients = ingredient_lst;
