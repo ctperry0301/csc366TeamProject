@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import csc366.jpademo.SupplyDetail;
 
 import java.sql.Date;
@@ -10,26 +11,22 @@ import java.util.StringJoiner;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
-@Entity  
-@Table(
-    name = "Location",
-    uniqueConstraints = @UniqueConstraint(columnNames={"locationId"})
-)
+@Entity
+@Table(name = "Location", uniqueConstraints = @UniqueConstraint(columnNames = { "locationId" }))
 
 public class Location {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long locationId;
 
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
 
-    //@OneToOne
-    //@Column(name="locationManager")
-    //private LocationManager locationManager;
+    // @OneToOne
+    // @Column(name="locationManager")
+    // private LocationManager locationManager;
 
-    @Column(name="openDate")
+    @Column(name = "openDate")
     private Date openDate;
 
     // One location has one Owner
@@ -37,18 +34,15 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "ownerId", nullable = false)
     private Owner owner;
-    
-    // the following line established the one to one relationship between Location and LocationManager
+
+    // the following line established the one to one relationship between Location
+    // and LocationManager
     @NotNull
-    @OneToOne(mappedBy = "location",
-            optional = false)
+    @OneToOne(mappedBy = "location", optional = false)
     private LocationManager locationManager;
 
     // One location has zero to many Receipts attached to it
-    @OneToMany(mappedBy="location",
-            cascade = CascadeType.ALL,
-            orphanRemoval = false,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private List<Receipt> receipts = new ArrayList<>();
 
     public void addReceipt(Receipt r) {
@@ -61,7 +55,7 @@ public class Location {
     }
 
     // One location has zero to many SupplyDetail
-    @OneToMany(mappedBy="location")
+    @OneToMany(mappedBy = "location")
     private List<SupplyDetail> supplyDetails;
 
     // Add relationship to Product, SupplyDetail, LocationManager, and Supplier
@@ -71,22 +65,25 @@ public class Location {
         this.openDate = openDate;
     }
 
-    public Location() {}
+    public Location() {
+    }
 
-    public long getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
     public String getAddress() {
         return address;
     }
-    public void setAddress(String address) {
+
+    public void setAddress() {
         this.address = address;
     }
 
     public LocationManager getLocationManager() {
         return locationManager;
     }
+
     public void setLocationManager(LocationManager lm) {
         this.locationManager = lm;
     }
@@ -109,20 +106,22 @@ public class Location {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Location location = (Location) o;
-        return locationId == location.locationId 
-            && address == location.address 
-            && locationManager == location.locationManager
-            && openDate == location.openDate;
+        return locationId == location.locationId
+                && address == location.address
+                && locationManager == location.locationManager
+                && openDate == location.openDate;
     }
 
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner(",", Location.class.getSimpleName() + "[", "]");
         sj.add(Long.toString(locationId)).add(address);
-        //.add(locationManager.toString());
+        // .add(locationManager.toString());
         return sj.toString();
     }
 
