@@ -31,6 +31,8 @@ import javax.validation.constraints.NotNull;
 // );
 
 @Entity // this class maps to a database table
+@Table(name = "Receipt", uniqueConstraints = @UniqueConstraint(columnNames = { "receiptId" }))
+
 public class Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

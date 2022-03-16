@@ -1,6 +1,5 @@
 package csc366.jpademo;
 
-
 import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,10 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-    name = "SuppliedPackagedGood",
-    uniqueConstraints = @UniqueConstraint(columnNames = "suppliedIngredientId")
-)
+@Table(name = "SuppliedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = "suppliedIngredientId"))
 
 public class SuppliedIngredient {
     @Id
@@ -35,20 +31,17 @@ public class SuppliedIngredient {
     @Column(name = "quantity")
     private long quantity;
 
-    //Owning side
+    // Owning side
     @ManyToOne
-    @JoinColumn(name="supplyDetailId", 
-                referencedColumnName="supplyDetail")
+    @JoinColumn(name = "supplyDetail", referencedColumnName = "supplyOrderId", nullable = false)
     private SupplyDetail supplyDetail;
 
-    //One to One relationship with InventoriedIngredient
-    //Owning side (SuppliedIngredient contains the foreign key that
-    //references InventoriedIngredient)
+    // One to One relationship with InventoriedIngredient
+    // Owning side (SuppliedIngredient contains the foreign key that
+    // references InventoriedIngredient)
     @OneToOne
-    @JoinColumn(name="ingredient",
-                referencedColumnName="ingredientId")
+    @JoinColumn(name = "ingredient", referencedColumnName = "ingredientId")
     private Ingredient ingredient;
-
 
     public SuppliedIngredient(int quantity, Ingredient ingredient) {
         this.ingredient = ingredient;

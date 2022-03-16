@@ -1,6 +1,5 @@
 package csc366.jpademo;
 
-
 import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,31 +21,26 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-  name = "SupplyDetail",
-  uniqueConstraints = @UniqueConstraint(columnNames={"supplyOrderId"})
-)
+@Table(name = "SupplyDetail", uniqueConstraints = @UniqueConstraint(columnNames = { "supplyOrderId" }))
 
 public class SupplyDetail {
   @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long supplyOrderId;
 
-  @Column(name="deliveryDate")
+  @Column(name = "deliveryDate")
   private Date deliveryDate;
 
-  @Column(name="delivered")
+  @Column(name = "delivered")
   private Boolean delivered;
 
   // Owning side
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "location", 
-              referencedColumnName="locationId",
-              nullable=true)
+  @JoinColumn(name = "location", referencedColumnName = "locationId", nullable = true)
   private Location location;
 
-  //inverse (non-owning) side
+  // inverse (non-owning) side
   @OneToMany(mappedBy = "supplyDetail")
   List<SuppliedPackagedGood> suppliedPackagedGoods;
 
@@ -59,9 +53,11 @@ public class SupplyDetail {
   @ManyToMany
   private List<PackagedGood> packagedGoods;
 
-  public SupplyDetail() { }
+  public SupplyDetail() {
+  }
 
-  public SupplyDetail(List<SuppliedIngredient> suppliedIngredients, List<SuppliedPackagedGood> suppliedPackagedGoods, Date deliveryDate, Boolean delivered) {
+  public SupplyDetail(List<SuppliedIngredient> suppliedIngredients, List<SuppliedPackagedGood> suppliedPackagedGoods,
+      Date deliveryDate, Boolean delivered) {
     this.suppliedIngredients = suppliedIngredients;
     this.suppliedPackagedGoods = suppliedPackagedGoods;
     this.deliveryDate = deliveryDate;
@@ -80,6 +76,10 @@ public class SupplyDetail {
     return supplyOrderId;
   }
 
+  public void setSupplyOrderId(Long supOrderId) {
+    this.supplyOrderId = supOrderId;
+  }
+
   public Boolean getDelivered() {
     return delivered;
   }
@@ -87,24 +87,26 @@ public class SupplyDetail {
   @Override
   public String toString() {
     return "SupplyDetail{" +
-      "supplyOrderId=" + supplyOrderId +
-      ", suppliedPackagedGoods=" + suppliedIngredients +
-      ", suppliedIngredients=" + suppliedPackagedGoods +
-      ", deliveryDate=" + deliveryDate +
-      ", delivered=" + delivered +
-      '}';
+        "supplyOrderId=" + supplyOrderId +
+        ", suppliedPackagedGoods=" + suppliedIngredients +
+        ", suppliedIngredients=" + suppliedPackagedGoods +
+        ", deliveryDate=" + deliveryDate +
+        ", delivered=" + delivered +
+        '}';
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
     SupplyDetail that = (SupplyDetail) o;
     return Objects.equals(supplyOrderId, that.supplyOrderId)
-         && Objects.equals(suppliedPackagedGoods, that.suppliedPackagedGoods) 
-         && Objects.equals(suppliedIngredients, that.suppliedIngredients) 
-         && Objects.equals(deliveryDate, that.deliveryDate) 
-         && Objects.equals(delivered, that.delivered);
+        && Objects.equals(suppliedPackagedGoods, that.suppliedPackagedGoods)
+        && Objects.equals(suppliedIngredients, that.suppliedIngredients)
+        && Objects.equals(deliveryDate, that.deliveryDate)
+        && Objects.equals(delivered, that.delivered);
   }
 
   @Override

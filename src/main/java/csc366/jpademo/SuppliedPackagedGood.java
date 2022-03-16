@@ -1,6 +1,5 @@
 package csc366.jpademo;
 
-
 import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,34 +21,27 @@ import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-  name = "SuppliedPackagedGood",
-  uniqueConstraints = @UniqueConstraint(columnNames={"suppliedPackagedGoodId"})
-)
+@Table(name = "SuppliedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = { "suppliedPackagedGoodId" }))
 
 public class SuppliedPackagedGood {
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private long suppliedPackagedGoodId;
-   
-   @Column(name="quantitiy")
-   private long quantity;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long suppliedPackagedGoodId;
 
-   //Owning side
-   @ManyToOne
-   @JoinColumn(name="supplyDetail", 
-            referencedColumnName="supplyDetailsId", 
-            nullable = false)
-   private SupplyDetail supplyDetail; 
+  @Column(name = "quantitiy")
+  private long quantity;
 
-   //OneToOne relationship with InventoriedPackagedGood
-   @OneToOne
-   @JoinColumn(name="inventoriedPackagedGood",
-               referencedColumnName="inventoriedPackagedGoodId")
-   private PackagedGood packagedGood;
+  // Owning side
+  @ManyToOne
+  @JoinColumn(name = "supplyDetail", referencedColumnName = "supplyOrderId", nullable = false)
+  private SupplyDetail supplyDetail;
 
-   public SuppliedPackagedGood(long quantity, PackagedGood packagedGood) {
-       this.packagedGood = packagedGood;
-       this.quantity = quantity;
-   }
+  @ManyToOne
+  @JoinColumn(name = "packagedGood", referencedColumnName = "packagedGoodId", nullable = false)
+  private PackagedGood packagedGood;
+
+  public SuppliedPackagedGood(long quantity, PackagedGood packagedGood) {
+    this.packagedGood = packagedGood;
+    this.quantity = quantity;
+  }
 }

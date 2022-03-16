@@ -147,8 +147,9 @@ public class ReceiptTest {
   @Test
   @Order(4)
   public void testAddPurchasedPackagedGood() {
-    PurchasedPackagedGood newWaffle = new PurchasedPackagedGood(waffle, receipt, 1);
-    receipt.addPurchasedPackagedGood(newWaffle);
+    PackagedGood granola = new PackagedGood("Granola");
+    PurchasedPackagedGood purchasedGranola = new PurchasedPackagedGood(granola, receipt, 1);
+    receipt.addPurchasedPackagedGood(purchasedGranola);
   }
 
   @Test

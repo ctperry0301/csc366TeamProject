@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,27 +15,19 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.*;
 
-
-@Entity  
+@Entity
+@Table(name = "FreshMadeGood", uniqueConstraints = @UniqueConstraint(columnNames = "freshMadeGoodId"))
 public class FreshMadeGood {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long freshMadeGoodId;
 
-    @Column(name="Name")
+    @Column(name = "Name")
     private String name;
 
     @ManyToMany
-    @JoinTable(
-      name = "FreshMadeGoodIngredient",
-      joinColumns = @JoinColumn(name = "ingredients"),
-      inverseJoinColumns = @JoinColumn(name = "goods"))
+    @JoinTable(name = "FreshMadeGoodIngredient", joinColumns = @JoinColumn(name = "ingredients"), inverseJoinColumns = @JoinColumn(name = "goods"))
     List<Ingredient> ingredients;
-
-    @NotNull
-    @OneToMany(mappedBy = "purchasedFreshMadeGood")
-    List<PurchasedFreshMadeGood> purchasedFreshMadeGoods;
-    
 
     public void setIngredients(List<Ingredient> ingredient_lst) {
         this.ingredients = ingredient_lst;
@@ -66,11 +59,13 @@ public class FreshMadeGood {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         FreshMadeGood fmg = (FreshMadeGood) o;
         return freshMadeGoodId == fmg.freshMadeGoodId
-            && name == fmg.name;
+                && name == fmg.name;
     }
 
     @Override

@@ -12,7 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "PurchasedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = "purchasedPackagedGoodId"))
+@Table(name = "PurchasedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = "purchasedPackagedGood"))
 
 public class PurchasedPackagedGood {
     @Id
@@ -26,7 +26,7 @@ public class PurchasedPackagedGood {
     @JoinColumn(name = "receipt", referencedColumnName = "receiptId")
     Receipt receipt;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "packagedGood", referencedColumnName = "packagedGoodId")
     PackagedGood packagedGood;
 
