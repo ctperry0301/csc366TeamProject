@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import csc366.jpademo.SupplyDetail;
 
 import java.sql.Date;
@@ -11,27 +12,22 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-    name="PurchasedPackagedGood",
-    uniqueConstraints = @UniqueConstraint(columnNames="purchasedPackagedGoodId")
-)
+@Table(name = "PurchasedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = "purchasedPackagedGoodId"))
 
 public class PurchasedPackagedGood {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchasedPackagedGood;
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private long quantity;
 
     @ManyToOne
-    @JoinColumn(name = "receipt",
-                referencedColumnName = "receiptId")
+    @JoinColumn(name = "receipt", referencedColumnName = "receiptId")
     Receipt receipt;
 
     @OneToMany
-    @JoinColumn(name = "packagedGood",
-                referencedColumnName = "packagedGoodId")
+    @JoinColumn(name = "packagedGood", referencedColumnName = "packagedGoodId")
     PackagedGood packagedGood;
 
     public PurchasedPackagedGood(PackagedGood packagedGood, Receipt receipt, long quantity) {
@@ -43,6 +39,18 @@ public class PurchasedPackagedGood {
     public void setReceipt(Receipt r) {
         this.receipt = r;
         r.addPurchasedPackagedGood(this);
+    }
+
+    public Receipt getReceipt() {
+        return this.receipt;
+    }
+
+    public void setQuantity(long qty) {
+        this.quantity = qty;
+    }
+
+    public long getQuantity() {
+        return this.quantity;
     }
 
 }

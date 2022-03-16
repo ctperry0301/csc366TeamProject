@@ -1,4 +1,5 @@
 package csc366.jpademo;
+
 import csc366.jpademo.SupplyDetail;
 
 import java.sql.Date;
@@ -11,33 +12,45 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-    name="PurchasedFreshMadeGood",
-    uniqueConstraints = @UniqueConstraint(columnNames="locationId")
-)
+@Table(name = "PurchasedFreshMadeGood", uniqueConstraints = @UniqueConstraint(columnNames = "locationId"))
 
 public class PurchasedFreshMadeGood {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchasedFreshMadeGoodId;
 
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private long quantity;
 
     @ManyToOne
-    @JoinColumn(name = "receipt",
-                referencedColumnName = "receiptId")
+    @JoinColumn(name = "receipt", referencedColumnName = "receiptId")
     Receipt receipt;
 
-    //Slightly problematic, need to come back to this one.
+    // Slightly problematic, need to come back to this one.
     @ManyToOne
-    @JoinColumn(name = "freshMadeGood",
-                referencedColumnName = "freshMadeGoodId")
+    @JoinColumn(name = "freshMadeGood", referencedColumnName = "freshMadeGoodId")
     FreshMadeGood freshMadeGood;
 
     public PurchasedFreshMadeGood(FreshMadeGood freshMadeGood, Receipt receipt, long quantity) {
         this.freshMadeGood = freshMadeGood;
         this.receipt = receipt;
         this.quantity = quantity;
+    }
+
+    public void setReceipt(Receipt recpt) {
+        this.receipt = recpt;
+        recpt.addPurchasedFreshMadeGood(this);
+    }
+
+    public Receipt getReceipt() {
+        return this.receipt;
+    }
+
+    public void setQuantity(long qty) {
+        this.quantity = qty;
+    }
+
+    public long getQuantity() {
+        return this.quantity;
     }
 }
