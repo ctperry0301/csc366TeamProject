@@ -65,8 +65,17 @@ public class ReceiptTest {
   @Autowired
   private IngredientRepository ingredientRepo;
 
-  // @Autowired
-  // private PurchasedItemRepository purchasedRepo;
+  @Autowired
+  private PackagedGoodRepository pGRepo;
+
+  @Autowired
+  private FreshMadeGoodRepository fMGRepo;
+
+  @Autowired
+  private PurchasedPackagedGoodRepository purchasedPGRepo;
+
+  @Autowired
+  private PurchasedFreshMadeGoodRepository purchasedFMGRepo;
 
   @Autowired
   private SupplyDetailRepository supplyDetailRepository;
@@ -93,11 +102,17 @@ public class ReceiptTest {
     empRepo.save(managerEmp);
     managerRepo.save(manager);
 
+    // adding customer and receipt info
     customerRepo.saveAndFlush(customer);
     receipt.setCustomer(customer);
     receipt.setLocation(loc);
     receiptRepo.saveAndFlush(receipt);
 
+    // adding purchased stuff to the receipt
+    pGRepo.save(waffle);
+    fMGRepo.save(smoothie);
+    purchasedPGRepo.save(purchasedWaffle);
+    purchasedFMGRepo.save(purchasedSmoothie);
     receipt.addPurchasedPackagedGood(purchasedWaffle);
     receipt.addPurchasedFreshMadeGood(purchasedSmoothie);
   }
