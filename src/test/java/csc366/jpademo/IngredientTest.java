@@ -62,6 +62,9 @@ public class IngredientTest {
 	private IngredientRepository ingredientRepo;
 
 	@Autowired
+	private SupplierRepository supplierRepository;
+
+	@Autowired
 	private SupplyDetailRepository supplyDetailRepository;
 
 	private final Location loc = new Location("addr", new java.sql.Date(1000000));
@@ -78,17 +81,20 @@ public class IngredientTest {
 	private final SuppliedIngredient supplied_yeast = new SuppliedIngredient(5, yeast);
 	private final SuppliedIngredient supplied_salt = new SuppliedIngredient(2, salt);
 
+	private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
 	private final SupplyDetail supplyDetail = new SupplyDetail();
 	private final FreshMadeGood good = new FreshMadeGood("bread");
 
 	@BeforeEach
 	private void setup() {
 		// establish location, owner, and manager connections.
+		ownerRepo.saveAndFlush(owner);
+		empRepo.saveAndFlush(managerEmp);
 		owner.addLocation(loc);
-		ownerRepo.save(owner);
+		manager = new LocationManager(managerEmp.getEmployeeId(), loc, 500);
+		loc.setLocationManager(manager);
 		locationRepo.save(loc);
-		empRepo.save(managerEmp);
-		managerRepo.save(manager);
+		managerRepo.saveAndFlush(manager);
 
 		ingredientRepo.save(flour);
 		ingredientRepo.save(yeast);
@@ -98,6 +104,12 @@ public class IngredientTest {
 		supplyDetail.addSuppliedIngredient(supplied_yeast);
 		supplyDetail.addSuppliedIngredient(supplied_salt);
 
+		supplierRepository.saveAndFlush(supplier);
+		supplier.setSupplierAddress("1 Grand Ave, San Luis Obispo, CA, 93405");
+		supplierRepository.saveAndFlush(supplier);
+		supplyDetail.setSupplier(supplier);
+		supplyDetail.setLocation(loc);
+
 		supplyDetailRepository.save(supplyDetail);
 
 	}
@@ -105,7 +117,7 @@ public class IngredientTest {
 	@Test
 	@Order(1)
 	public void testIngredientAndDetailAndGood() {
-		Ingredient ingredient2 = ingredientRepo.findByName("Carrot");
+		Ingredient ingredient2 = ingredientRepo.findByName("Yeast");
 
 		log.info(ingredient2.toString());
 
@@ -127,7 +139,7 @@ public class IngredientTest {
 	@Test
 	@Order(2)
 	public void testRemoveGood() {
-		Ingredient i = ingredientRepo.findByName("Carrot");
+		Ingredient i = ingredientRepo.findByName("Yeast");
 		FreshMadeGood g = new ArrayList<FreshMadeGood>(i.getGoods()).get(0); // get an address
 		i.removeGood(g);
 		ingredientRepo.save(i);
@@ -138,10 +150,10 @@ public class IngredientTest {
 	@Test
 	@Order(3)
 	public void testUpdateName() {
-		Ingredient i = ingredientRepo.findByName("Carrot");
+		Ingredient i = ingredientRepo.findByName("Yeast");
 		log.info(i.toString());
 
-		ingredientRepo.updateName("Carrot", "apple");
+		ingredientRepo.updateName("Yeast", "apple");
 
 		i = ingredientRepo.findByName("apple");
 		assertNotNull(i);

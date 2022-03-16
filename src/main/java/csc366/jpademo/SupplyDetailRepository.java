@@ -9,5 +9,6 @@ import org.springframework.data.repository.query.Param;
 // This class will be automatically implemented by Spring and made available as a "Bean" named personRepository
 @Repository
 public interface SupplyDetailRepository extends JpaRepository<SupplyDetail, Long> {
+    SupplyDetail findBySupplyOrderId(long supplyOrderId);
 
 }

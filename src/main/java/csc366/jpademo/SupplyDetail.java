@@ -2,6 +2,7 @@ package csc366.jpademo;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -42,10 +43,10 @@ public class SupplyDetail {
 
   // inverse (non-owning) side
   @OneToMany(mappedBy = "supplyDetail")
-  List<SuppliedPackagedGood> suppliedPackagedGoods;
+  List<SuppliedPackagedGood> suppliedPackagedGoods = new ArrayList<>();
 
   @OneToMany(mappedBy = "supplyDetail")
-  List<SuppliedIngredient> suppliedIngredients;
+  List<SuppliedIngredient> suppliedIngredients = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Supplier supplier;
@@ -78,6 +79,22 @@ public class SupplyDetail {
 
   public void setSupplyOrderId(Long supOrderId) {
     this.supplyOrderId = supOrderId;
+  }
+
+  public Supplier getSupplier() {
+    return this.supplier;
+  }
+
+  public void setSupplier(Supplier sup) {
+    this.supplier = sup;
+  }
+
+  public Location getLocation() {
+    return this.location;
+  }
+
+  public void setLocation(Location loc) {
+    this.location = loc;
   }
 
   public Boolean getDelivered() {
