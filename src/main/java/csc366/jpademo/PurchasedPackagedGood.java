@@ -22,23 +22,27 @@ public class PurchasedPackagedGood {
     @Column(name = "quantity")
     private long quantity;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "receipt", referencedColumnName = "receiptId")
-    Receipt receipt;
+    @JoinColumn(name = "receipt", referencedColumnName = "receiptId", nullable = false)
+    private Receipt receipt;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "packagedGood", referencedColumnName = "packagedGoodId")
-    PackagedGood packagedGood;
+    @JoinColumn(name = "packagedGood", referencedColumnName = "packagedGoodId", nullable = false)
+    private PackagedGood packagedGood;
 
-    public PurchasedPackagedGood(PackagedGood packagedGood, Receipt receipt, long quantity) {
-        this.packagedGood = packagedGood;
+    public PurchasedPackagedGood(Receipt receipt, long quantity) {
         this.receipt = receipt;
         this.quantity = quantity;
     }
 
+    public void setPackagedGood(PackagedGood pG) {
+        this.packagedGood = pG;
+    }
+
     public void setReceipt(Receipt r) {
         this.receipt = r;
-        r.addPurchasedPackagedGood(this);
     }
 
     public Receipt getReceipt() {

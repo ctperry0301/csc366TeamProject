@@ -80,39 +80,45 @@ public class ReceiptTest {
   @Autowired
   private SupplyDetailRepository supplyDetailRepository;
 
-  private final Location loc = new Location("addr", new java.sql.Date(1000000));
+  private Location loc = new Location("addr", new java.sql.Date(1000000));
   private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
-  private final LocationManager manager = new LocationManager(0L, loc, 1000); // managerEmp.getEmployeeId()
+  private LocationManager manager = new LocationManager(0L, loc, 1000); // managerEmp.getEmployeeId()
   private final Owner owner = new Owner("owner", "name");
 
   private final Receipt receipt = new Receipt(LocalDateTime.now());
   private Customer customer = new Customer("first", "last");
 
   private final PackagedGood waffle = new PackagedGood("Waffle");
-  private final PurchasedPackagedGood purchasedWaffle = new PurchasedPackagedGood(waffle, receipt, 2L);
+  private PurchasedPackagedGood purchasedWaffle = new PurchasedPackagedGood(receipt, 2L);
   private final FreshMadeGood smoothie = new FreshMadeGood("Bananamango Smoothie");
-  private final PurchasedFreshMadeGood purchasedSmoothie = new PurchasedFreshMadeGood(smoothie, receipt, 4L);
+  private PurchasedFreshMadeGood purchasedSmoothie = new PurchasedFreshMadeGood(receipt, 4L);
 
   @BeforeEach
   private void setup() {
     // establish location, owner, and manager connections.
+    ownerRepo.saveAndFlush(owner);
+    empRepo.saveAndFlush(managerEmp);
     owner.addLocation(loc);
-    ownerRepo.save(owner);
+    manager = new LocationManager(managerEmp.getEmployeeId(), loc, 500);
+    loc.setLocationManager(manager);
     locationRepo.save(loc);
-    empRepo.save(managerEmp);
-    managerRepo.save(manager);
+    managerRepo.saveAndFlush(manager);
 
     // adding purchased stuff to the receipt
     pGRepo.save(waffle);
-    fMGRepo.save(smoothie);
-    purchasedPGRepo.save(purchasedWaffle);
-    purchasedFMGRepo.save(purchasedSmoothie);
+    waffle.addPurchasedPackagedGood(purchasedWaffle);
     receipt.addPurchasedPackagedGood(purchasedWaffle);
+    // pGRepo.saveAndFlush(waffle);
+    // purchasedPGRepo.saveAndFlush(purchasedWaffle);
+
+    fMGRepo.save(smoothie);
+    smoothie.addPurchasedFreshMadeGood(purchasedSmoothie);
     receipt.addPurchasedFreshMadeGood(purchasedSmoothie);
+    // purchasedFMGRepo.saveAndFlush(purchasedSmoothie);
 
     // adding customer and receipt info
-    customerRepo.saveAndFlush(customer);
     receipt.setCustomer(customer);
+    customerRepo.save(customer);
     receipt.setLocation(loc);
     receiptRepo.saveAndFlush(receipt);
   }
@@ -148,7 +154,8 @@ public class ReceiptTest {
   @Order(4)
   public void testAddPurchasedPackagedGood() {
     PackagedGood granola = new PackagedGood("Granola");
-    PurchasedPackagedGood purchasedGranola = new PurchasedPackagedGood(granola, receipt, 1);
+    PurchasedPackagedGood purchasedGranola = new PurchasedPackagedGood(receipt, 1);
+    granola.addPurchasedPackagedGood(purchasedGranola);
     receipt.addPurchasedPackagedGood(purchasedGranola);
   }
 
@@ -161,8 +168,10 @@ public class ReceiptTest {
   @Test
   @Order(6)
   public void testAddPurchasedFreshMadeGood() {
-    PurchasedFreshMadeGood newSmoothie = new PurchasedFreshMadeGood(smoothie, receipt, 1);
-    receipt.addPurchasedFreshMadeGood(newSmoothie);
+    FreshMadeGood oatmeal = new FreshMadeGood("Oatmeal");
+    PurchasedFreshMadeGood purchasedOatmeal = new PurchasedFreshMadeGood(receipt, 1);
+    oatmeal.addPurchasedFreshMadeGood(purchasedOatmeal);
+    receipt.addPurchasedFreshMadeGood(purchasedOatmeal);
   }
 
   @Test

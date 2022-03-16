@@ -31,78 +31,77 @@ import javax.validation.ConstraintViolationException;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @TestPropertySource(properties = {
-  "spring.main.banner-mode=off",
-  "spring.jpa.hibernate.ddl-auto=update",
-  "logging.level.root=ERROR",
-  "logging.level.csc366=DEBUG",
+    "spring.main.banner-mode=off",
+    "spring.jpa.hibernate.ddl-auto=update",
+    "logging.level.root=ERROR",
+    "logging.level.csc366=DEBUG",
 
-  "logging.level.org.hibernate.SQL=DEBUG",
-  "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
-  "spring.jpa.properties.hibernate.format_sql=true",
-  "spring.jpa.show-sql=false",   // prevent duplicate logging
-  "spring.jpa.properties.hibernate.show_sql=false",
+    "logging.level.org.hibernate.SQL=DEBUG",
+    "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
+    "spring.jpa.properties.hibernate.format_sql=true",
+    "spring.jpa.show-sql=false", // prevent duplicate logging
+    "spring.jpa.properties.hibernate.show_sql=false",
 
-  "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 })
 @TestMethodOrder(OrderAnnotation.class)
 public class LocationTest {
 
   private final static Logger log = LoggerFactory.getLogger(LocationTest.class);
 
-  //@Autowired
-  //private LocationRepository locationRepository;
+  // @Autowired
+  // private LocationRepository locationRepository;
   @Autowired
-    private ShiftRepository shiftRepo;
+  private ShiftRepository shiftRepo;
 
-    @Autowired
-    private LocationManagerRepository managerRepo;
+  @Autowired
+  private LocationManagerRepository managerRepo;
 
-    @Autowired
-    private EmployeeRepository empRepo;
+  @Autowired
+  private EmployeeRepository empRepo;
 
-    @Autowired
-    private LocationRepository locationRepo;
+  @Autowired
+  private LocationRepository locationRepo;
 
-    @Autowired
-    private OwnerRepository ownerRepo;
+  @Autowired
+  private OwnerRepository ownerRepo;
 
-    @Autowired
-    private ReceiptRepository receiptRepo;
+  @Autowired
+  private ReceiptRepository receiptRepo;
 
-    private LocationManager manager = null;
-    private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
-    private Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(123456));
-	  private Shift shift = null;
-	  private Location location = new Location("addr", new java.sql.Date(1000000));
-    private Location location2 = new Location("addr2", new java.sql.Date(1000000));
-	  private final Owner owner = new Owner("owner", "name");
-    private final Receipt receipt = new Receipt(LocalDateTime.now());
-    private final Receipt receipt_no_location = new Receipt(LocalDateTime.now());
-    private final PackagedGood packagedGood = new PackagedGood("Sandwhich");
-    private final PurchasedPackagedGood purchasedPackagedGood = new PurchasedPackagedGood(packagedGood, receipt, 2);
+  private LocationManager manager = null;
+  private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
+  private Employee worker = new Employee("first", "last", new java.sql.Date(1000000), Long.valueOf(123456));
+  private Shift shift = null;
+  private Location location = new Location("addr", new java.sql.Date(1000000));
+  private Location location2 = new Location("addr2", new java.sql.Date(1000000));
+  private final Owner owner = new Owner("owner", "name");
+  private final Receipt receipt = new Receipt(LocalDateTime.now());
+  private final Receipt receipt_no_location = new Receipt(LocalDateTime.now());
+  private final PackagedGood packagedGood = new PackagedGood("Sandwhich");
+  private final PurchasedPackagedGood purchasedPackagedGood = new PurchasedPackagedGood(receipt, 2);
 
-    @BeforeEach
-    private void setup() {
-      
-		ownerRepo.saveAndFlush(owner);
-		empRepo.saveAndFlush(managerEmp);
-		empRepo.saveAndFlush(worker);
+  @BeforeEach
+  private void setup() {
+
+    ownerRepo.saveAndFlush(owner);
+    empRepo.saveAndFlush(managerEmp);
+    empRepo.saveAndFlush(worker);
     owner.addLocation(location);
-		manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
-		location.setLocationManager(manager);
-		location = locationRepo.save(location);
-		manager.addEmployee(worker);
-		managerRepo.saveAndFlush(manager);
-    }
+    manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
+    location.setLocationManager(manager);
+    location = locationRepo.save(location);
+    manager.addEmployee(worker);
+    managerRepo.saveAndFlush(manager);
+  }
 
-
-  //Location and LocationManager OneToOne relationship test
+  // Location and LocationManager OneToOne relationship test
   @Test
   @Order(1)
   public void testAddLocation() {
     try {
-		  location.setLocationManager(manager);
-		  location = locationRepo.save(location);
+      location.setLocationManager(manager);
+      location = locationRepo.save(location);
 
     } catch (Exception e) {
       fail("Should not raise exception.");
@@ -119,7 +118,7 @@ public class LocationTest {
     }
   }
 
-  //Location and Owner OneToOne relationship test
+  // Location and Owner OneToOne relationship test
   @Test
   @Order(3)
   public void testFindLocationOwner() {
@@ -127,7 +126,7 @@ public class LocationTest {
     assertEquals(loc.getOwner(), owner);
   }
 
-  //Location and Receipt OneToMany relationship tests
+  // Location and Receipt OneToMany relationship tests
   @Test
   @Order(4)
   public void testAddReceipt() {
@@ -149,25 +148,25 @@ public class LocationTest {
     }
   }
 
-  //Location and Supply Details relationship tests
-  //NEEDS TO BE IMPLEMENTED
+  // Location and Supply Details relationship tests
+  // NEEDS TO BE IMPLEMENTED
   @Test
   @Order(5)
   public void testAddSupplyDetails() {
     assertTrue(true);
   }
 
-  //NEEDS TO BE IMPLEMENTED
+  // NEEDS TO BE IMPLEMENTED
   @Test
   @Order(6)
   public void testAddSupplyDetailsNoLocation() {
     if (true) {
       return;
     }
-    try{
-      //code to add supply details (sans location) here
+    try {
+      // code to add supply details (sans location) here
       fail("Didn't throw error when supply details is added without location");
-    } catch (Exception e){
+    } catch (Exception e) {
     }
   }
 

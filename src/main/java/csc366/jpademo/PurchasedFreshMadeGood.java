@@ -22,24 +22,28 @@ public class PurchasedFreshMadeGood {
     @Column(name = "quantity")
     private long quantity;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "receipt", referencedColumnName = "receiptId")
+    @JoinColumn(name = "receipt", referencedColumnName = "receiptId", nullable = false)
     private Receipt receipt;
 
     // Slightly problematic, need to come back to this one.
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "freshMadeGood", referencedColumnName = "freshMadeGoodId", nullable = false)
     private FreshMadeGood freshMadeGood;
 
-    public PurchasedFreshMadeGood(FreshMadeGood freshMadeGood, Receipt receipt, long quantity) {
-        this.freshMadeGood = freshMadeGood;
+    public PurchasedFreshMadeGood(Receipt receipt, long quantity) {
         this.receipt = receipt;
         this.quantity = quantity;
     }
 
+    public void setFreshMadeGood(FreshMadeGood fMG) {
+        this.freshMadeGood = fMG;
+    }
+
     public void setReceipt(Receipt recpt) {
         this.receipt = recpt;
-        recpt.addPurchasedFreshMadeGood(this);
     }
 
     public Receipt getReceipt() {

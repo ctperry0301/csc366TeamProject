@@ -3,6 +3,7 @@ package csc366.jpademo;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.StringJoiner;
 import java.time.LocalDateTime;
 
@@ -50,10 +51,12 @@ public class Receipt {
 
     // @NotNull
     @OneToMany(mappedBy = "receipt")
-    private List<PurchasedPackagedGood> purchasedPackagedGoods;
+    @Column(nullable = false)
+    private List<PurchasedPackagedGood> purchasedPackagedGoods = new ArrayList<>();
 
     @OneToMany(mappedBy = "receipt")
-    private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods;
+    @Column(nullable = false)
+    private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods = new ArrayList<>();
 
     public Receipt() {
     }
@@ -64,6 +67,7 @@ public class Receipt {
 
     public void addPurchasedPackagedGood(PurchasedPackagedGood ppg) {
         this.purchasedPackagedGoods.add(ppg);
+        ppg.setReceipt(this);
     }
 
     public void removePurchasedPackagedGood(PurchasedPackagedGood ppg) {
@@ -72,6 +76,7 @@ public class Receipt {
 
     public void addPurchasedFreshMadeGood(PurchasedFreshMadeGood pfmg) {
         this.purchasedFreshMadeGoods.add(pfmg);
+        pfmg.setReceipt(this);
     }
 
     public void removePurchasedFreshMadeGood(PurchasedFreshMadeGood pfmg) {

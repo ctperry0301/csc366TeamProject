@@ -25,6 +25,10 @@ public class FreshMadeGood {
     @Column(name = "Name")
     private String name;
 
+    @OneToMany(mappedBy = "freshMadeGood", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(name = "FreshMadeGoodIngredient", joinColumns = @JoinColumn(name = "ingredients"), inverseJoinColumns = @JoinColumn(name = "goods"))
     List<Ingredient> ingredients;
@@ -39,6 +43,11 @@ public class FreshMadeGood {
 
     public FreshMadeGood(String name) {
         this.name = name;
+    }
+
+    public void addPurchasedFreshMadeGood(PurchasedFreshMadeGood pFMG) {
+        this.purchasedFreshMadeGoods.add(pFMG);
+        pFMG.setFreshMadeGood(this);
     }
 
     public long getFreshMadeGoodId() {
