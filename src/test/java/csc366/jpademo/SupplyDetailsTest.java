@@ -29,23 +29,23 @@ import javax.validation.ConstraintViolationException;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @TestPropertySource(properties = {
-  "spring.main.banner-mode=off",
-  "spring.jpa.hibernate.ddl-auto=update",
-  "logging.level.root=ERROR",
-  "logging.level.csc366=DEBUG",
+        "spring.main.banner-mode=off",
+        "spring.jpa.hibernate.ddl-auto=update",
+        "logging.level.root=ERROR",
+        "logging.level.csc366=DEBUG",
 
-  "logging.level.org.hibernate.SQL=DEBUG",
-  "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
-  "spring.jpa.properties.hibernate.format_sql=true",
-  "spring.jpa.show-sql=false",   // prevent duplicate logging
-  "spring.jpa.properties.hibernate.show_sql=false",
+        "logging.level.org.hibernate.SQL=DEBUG",
+        "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE", // display prepared statement parameters
+        "spring.jpa.properties.hibernate.format_sql=true",
+        "spring.jpa.show-sql=false", // prevent duplicate logging
+        "spring.jpa.properties.hibernate.show_sql=false",
 
-  "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+        "logging.pattern.console= %d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 })
 
 @TestMethodOrder(OrderAnnotation.class)
 public class SupplyDetailsTest {
-  
+
     private final static Logger log = LoggerFactory.getLogger(LocationTest.class);
 
     @Autowired
@@ -62,11 +62,11 @@ public class SupplyDetailsTest {
 
     private final Owner owner = new Owner("Joe", "Shmoe");
     private Location location = new Location("addr", new java.sql.Date(1000000));
-    private final Employee managerEmp = new Employee("Nate", "Holland", new java.sql.Date(1000000), Long.valueOf(12345));
-    private LocationManager manager = new LocationManager(managerEmp.getEmployeeId(), location, 500);
+    private final Employee managerEmp = new Employee("Nate", "Holland", new java.sql.Date(1000000),
+            Long.valueOf(12345));
+    private LocationManager manager = new LocationManager(0L, location, 500); // managerEmp.getEmployeeId()
     private SupplyDetail supplyDetailExample = null;
     private SuppliedIngredient ingredient1 = null;
-
 
     @BeforeEach
     private void setup() {
@@ -83,8 +83,8 @@ public class SupplyDetailsTest {
     @Test
     @Order(1)
     public void testAddSupplyDetails() {
-        //suppliedIngredient = new SuppliedIngredient
-        //supplyDetailExample = new SupplyDetail();
+        // suppliedIngredient = new SuppliedIngredient
+        // supplyDetailExample = new SupplyDetail();
         assertTrue(true);
     }
 

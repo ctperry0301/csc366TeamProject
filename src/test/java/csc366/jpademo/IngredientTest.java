@@ -67,7 +67,7 @@ public class IngredientTest {
 	private final Location loc = new Location("addr", new java.sql.Date(1000000));
 	private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000),
 			Long.valueOf(12345));
-	private LocationManager manager = new LocationManager(managerEmp.getEmployeeId(), loc, 1000);
+	private LocationManager manager = new LocationManager(0L, loc, 1000); // managerEmp.getEmployeeId()
 	private Owner owner = new Owner("owner", "name");
 
 	private final Ingredient flour = new Ingredient("Flour");

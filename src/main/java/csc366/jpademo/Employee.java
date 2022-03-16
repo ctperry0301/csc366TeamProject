@@ -9,37 +9,33 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-    name = "Employee",
-    uniqueConstraints = @UniqueConstraint(columnNames= {"employeeId"})
-)
+@Table(name = "Employee", uniqueConstraints = @UniqueConstraint(columnNames = { "employeeId" }))
 
 public class Employee {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
 
-    @Column(name="first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name="start_date")
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column(unique=true, name="SSN")
+    @Column(unique = true, name = "SSN")
     private Long SSN;
 
-    @OneToMany(mappedBy="employee",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Paycheck> paychecks = new ArrayList<>();
 
     @OneToMany(mappedBy = "worker")
     private List<Shift> shifts = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name="managerId")
+    @JoinColumn(name = "managerId")
     private LocationManager manager;
 
     public Employee(String firstName, String lastName, Date startDate, Long SSN) {
@@ -49,19 +45,21 @@ public class Employee {
         this.SSN = SSN;
     }
 
-    public Employee() {}
+    public Employee() {
+    }
 
     public Long getEmployeeId() {
-        return employeeId;
+        return this.employeeId;
     }
 
     public void setId(Long employeeId) {
         this.employeeId = employeeId;
     }
-    
+
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -129,21 +127,25 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-          "employeeId=" + employeeId +
-          ", firstName='" + firstName + '\'' +
-          ", lastName='" + lastName + '\'' +
-          ", startDate=" + startDate +
-          ", SSN=" + SSN +
-          ", shifts" + shifts.toString() +
-          '}';
+                "employeeId=" + employeeId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", startDate=" + startDate +
+                ", SSN=" + SSN +
+                ", shifts" + shifts.toString() +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Employee employee = (Employee) o;
-        return employeeId.equals(employee.employeeId) && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(startDate, employee.startDate) && Objects.equals(SSN, employee.SSN) && Objects.equals(paychecks, employee.paychecks);
+        return employeeId.equals(employee.employeeId) && Objects.equals(firstName, employee.firstName)
+                && Objects.equals(lastName, employee.lastName) && Objects.equals(startDate, employee.startDate)
+                && Objects.equals(SSN, employee.SSN) && Objects.equals(paychecks, employee.paychecks);
     }
 
     @Override

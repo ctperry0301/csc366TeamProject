@@ -82,11 +82,11 @@ public class ReceiptTest {
 
   private final Location loc = new Location("addr", new java.sql.Date(1000000));
   private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000), Long.valueOf(12345));
-  private LocationManager manager = new LocationManager(managerEmp.getEmployeeId(), loc, 1000);
-  private Owner owner = new Owner("owner", "name");
+  private final LocationManager manager = new LocationManager(0L, loc, 1000); // managerEmp.getEmployeeId()
+  private final Owner owner = new Owner("owner", "name");
 
   private final Receipt receipt = new Receipt(LocalDateTime.now());
-  private final Customer customer = new Customer("first", "last");
+  private Customer customer = new Customer("first", "last");
 
   private final PackagedGood waffle = new PackagedGood("Waffle");
   private final PurchasedPackagedGood purchasedWaffle = new PurchasedPackagedGood(waffle, receipt, 2L);
@@ -102,12 +102,6 @@ public class ReceiptTest {
     empRepo.save(managerEmp);
     managerRepo.save(manager);
 
-    // adding customer and receipt info
-    customerRepo.saveAndFlush(customer);
-    receipt.setCustomer(customer);
-    receipt.setLocation(loc);
-    receiptRepo.saveAndFlush(receipt);
-
     // adding purchased stuff to the receipt
     pGRepo.save(waffle);
     fMGRepo.save(smoothie);
@@ -115,6 +109,12 @@ public class ReceiptTest {
     purchasedFMGRepo.save(purchasedSmoothie);
     receipt.addPurchasedPackagedGood(purchasedWaffle);
     receipt.addPurchasedFreshMadeGood(purchasedSmoothie);
+
+    // adding customer and receipt info
+    customerRepo.saveAndFlush(customer);
+    receipt.setCustomer(customer);
+    receipt.setLocation(loc);
+    receiptRepo.saveAndFlush(receipt);
   }
 
   @Test
