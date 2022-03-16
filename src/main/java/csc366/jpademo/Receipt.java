@@ -43,19 +43,18 @@ public class Receipt {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location", 
-                referencedColumnName = "locationId", 
-                nullable = false)
+    @JoinColumn(name = "location", referencedColumnName = "locationId", nullable = false)
     private Location location;
 
-    //@NotNull
+    // @NotNull
     @OneToMany(mappedBy = "receipt")
     private List<PurchasedPackagedGood> purchasedPackagedGoods;
 
     @OneToMany(mappedBy = "receipt")
     private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods;
 
-    public Receipt() {}
+    public Receipt() {
+    }
 
     public Receipt(LocalDateTime dateTime) {
         this.dateTime = dateTime;
@@ -63,6 +62,10 @@ public class Receipt {
 
     public void addPurchasedPackagedGood(PurchasedPackagedGood ppg) {
         purchasedPackagedGoods.add(ppg);
+    }
+
+    public void addPurchasedFreshMadeGood(PurchasedFreshMadeGood pfmg) {
+        purchasedFreshMadeGoods.add(pfmg);
     }
 
     public Long getReceiptId() {
