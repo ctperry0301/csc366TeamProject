@@ -61,11 +61,19 @@ public class Receipt {
     }
 
     public void addPurchasedPackagedGood(PurchasedPackagedGood ppg) {
-        purchasedPackagedGoods.add(ppg);
+        this.purchasedPackagedGoods.add(ppg);
+    }
+
+    public void removePurchasedPackagedGood(PurchasedPackagedGood ppg) {
+        this.purchasedPackagedGoods.remove(ppg);
     }
 
     public void addPurchasedFreshMadeGood(PurchasedFreshMadeGood pfmg) {
-        purchasedFreshMadeGoods.add(pfmg);
+        this.purchasedFreshMadeGoods.add(pfmg);
+    }
+
+    public void removePurchasedFreshMadeGood(PurchasedFreshMadeGood pfmg) {
+        this.purchasedFreshMadeGoods.remove(pfmg);
     }
 
     public Long getReceiptId() {
