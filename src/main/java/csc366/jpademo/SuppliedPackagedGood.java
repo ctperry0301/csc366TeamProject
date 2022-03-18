@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "SuppliedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = { "suppliedPackagedGoodId" }))
@@ -31,9 +32,12 @@ public class SuppliedPackagedGood {
   @Column(name = "quantitiy")
   private long quantity;
 
+  private float pricePerUnit;
+
   // Owning side
+  //@NotNull
   @ManyToOne
-  @JoinColumn(name = "supplyDetail", referencedColumnName = "supplyOrderId", nullable = false)
+  @JoinColumn(name = "supplyDetail")
   private SupplyDetail supplyDetail;
 
   @ManyToOne
@@ -43,5 +47,30 @@ public class SuppliedPackagedGood {
   public SuppliedPackagedGood(long quantity, PackagedGood packagedGood) {
     this.packagedGood = packagedGood;
     this.quantity = quantity;
+  }
+
+  public SuppliedPackagedGood() {}
+
+  public double getTotalPrice() {
+    return this.quantity * this.pricePerUnit;
+  }
+
+  public void setSupplyDetail(SupplyDetail sd) {
+    this.supplyDetail = sd;
+    sd.addSuppliedPackagedGood(this);
+  }
+
+  public SupplyDetail getSupplyDetail() {
+    return this.supplyDetail;
+  }
+
+  @Override
+  public String toString() {
+    return "SuppliedPackagedGood{" +
+        "supplyPackagedGoodId=" + suppliedPackagedGoodId +
+        ", quantity=" + quantity +
+        ", pricePerUnit=" + pricePerUnit +
+        ", supplyDetailsId=" + String.valueOf(supplyDetail.getSupplyOrderId()) +
+        '}';
   }
 }

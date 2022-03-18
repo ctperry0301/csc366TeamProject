@@ -65,6 +65,17 @@ public class SupplyDetail {
     this.delivered = delivered;
   }
 
+  public double getPrice() {
+    double price = 0;
+    for (int i = 0; i < this.suppliedPackagedGoods.size(); i++) {
+      price += this.suppliedPackagedGoods.get(i).getTotalPrice();
+    }
+    for (int i = 0; i < this.suppliedIngredients.size(); i++) {
+      price += this.suppliedIngredients.get(i).getTotalPrice();
+    }
+    return price;
+  }
+
   public void addSuppliedIngredient(SuppliedIngredient i) {
     suppliedIngredients.add(i);
   }
@@ -101,12 +112,20 @@ public class SupplyDetail {
     return delivered;
   }
 
+  public List<SuppliedIngredient> getSuppliedIngredients() {
+    return this.suppliedIngredients;
+  } 
+
+  public List<SuppliedPackagedGood> getSuppliedPackagedGoods() {
+    return this.suppliedPackagedGoods;
+  }
+
   @Override
   public String toString() {
     return "SupplyDetail{" +
         "supplyOrderId=" + supplyOrderId +
-        ", suppliedPackagedGoods=" + suppliedIngredients +
-        ", suppliedIngredients=" + suppliedPackagedGoods +
+        ", suppliedPackagedGoods=" + suppliedPackagedGoods +
+        ", suppliedIngredients=" + suppliedIngredients +
         ", deliveryDate=" + deliveryDate +
         ", delivered=" + delivered +
         '}';

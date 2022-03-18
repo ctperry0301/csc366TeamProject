@@ -49,7 +49,7 @@ public class SupplierTest {
   private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
 
   private final Ingredient banana = new Ingredient("Banana");
-  private final SuppliedIngredient sI1 = new SuppliedIngredient(2, banana);
+  private final SuppliedIngredient sI1 = new SuppliedIngredient(2, banana, 0.75);
   private List<SuppliedIngredient> suppliedIngredients = Arrays.asList(sI1);
   private final PackagedGood pretzel = new PackagedGood("pretzel");
   private final SuppliedPackagedGood sPG1 = new SuppliedPackagedGood(1L, pretzel);
@@ -81,7 +81,7 @@ public class SupplierTest {
   @Order(2)
   public void testSupplyOrderId() {
     Ingredient orange = new Ingredient("Orange");
-    SuppliedIngredient sI2 = new SuppliedIngredient(5, orange);
+    SuppliedIngredient sI2 = new SuppliedIngredient(5, orange, 1.00);
     List<SuppliedIngredient> suppliedIngredients2 = Arrays.asList(sI2);
     PackagedGood oats = new PackagedGood("Oats");
     SuppliedPackagedGood sPG2 = new SuppliedPackagedGood(4L, oats);

@@ -2,6 +2,7 @@ package csc366.jpademo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +68,9 @@ public class IngredientTest {
 	@Autowired
 	private SupplyDetailRepository supplyDetailRepository;
 
+	@Autowired
+	private FreshMadeGoodRepository freshMadeGoodRepo;
+
 	private final Location loc = new Location("addr", new java.sql.Date(1000000));
 	private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000),
 			Long.valueOf(12345));
@@ -77,13 +81,13 @@ public class IngredientTest {
 	private final Ingredient yeast = new Ingredient("Yeast");
 	private final Ingredient salt = new Ingredient("Salt");
 
-	private final SuppliedIngredient supplied_flour = new SuppliedIngredient(10, flour);
-	private final SuppliedIngredient supplied_yeast = new SuppliedIngredient(5, yeast);
-	private final SuppliedIngredient supplied_salt = new SuppliedIngredient(2, salt);
+    private final SuppliedIngredient supplied_flour = new SuppliedIngredient(10, flour, 1.99);
+    private final SuppliedIngredient supplied_yeast = new SuppliedIngredient(5, yeast, 0.25);
+    private final SuppliedIngredient supplied_salt = new SuppliedIngredient(2, salt, 0.05);
 
 	private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
 	private final SupplyDetail supplyDetail = new SupplyDetail();
-	private final FreshMadeGood good = new FreshMadeGood("bread");
+	private final FreshMadeGood bread = new FreshMadeGood("bread");
 
 	@BeforeEach
 	private void setup() {
@@ -99,6 +103,12 @@ public class IngredientTest {
 		ingredientRepo.save(flour);
 		ingredientRepo.save(yeast);
 		ingredientRepo.save(salt);
+
+		bread.addIngredient(flour);
+		bread.addIngredient(salt);
+		bread.addIngredient(yeast);
+
+		freshMadeGoodRepo.save(bread);
 
 		supplyDetail.addSuppliedIngredient(supplied_flour);
 		supplyDetail.addSuppliedIngredient(supplied_yeast);
@@ -116,7 +126,7 @@ public class IngredientTest {
 
 	@Test
 	@Order(1)
-	public void testIngredientAndDetailAndGood() {
+	public void testGetWhatCanBeMadeWithIngredient() {
 		Ingredient ingredient2 = ingredientRepo.findByName("Yeast");
 
 		log.info(ingredient2.toString());
@@ -125,26 +135,13 @@ public class IngredientTest {
 		assertEquals(ingredient2.getGoods().size(), 1);
 	}
 
-	// @Test
-	// @Order(2)
-	// public void testRemoveDetail() {
-	// Ingredient i = ingredientRepo.findByName("Carrot");
-	// SupplyDetail s = new ArrayList<SupplyDetail>(i.getSupplyDetails()).get(0); //
-	// get an address
-	// i.removeSupplyDetail(s);
-	// assertEquals(i.getSupplyDetails().size(), 0);
-	// log.info(i.toString());
-	// }
-
 	@Test
 	@Order(2)
-	public void testRemoveGood() {
-		Ingredient i = ingredientRepo.findByName("Yeast");
-		FreshMadeGood g = new ArrayList<FreshMadeGood>(i.getGoods()).get(0); // get an address
-		i.removeGood(g);
-		ingredientRepo.save(i);
-		assertEquals(i.getGoods().size(), 0);
-		log.info(i.toString());
+	public void testGetIngredientsOfFreshMadeGood() {
+		FreshMadeGood b = freshMadeGoodRepo.findByName("bread");
+		List<Ingredient> bread_ingredients = b.getIngredients();
+
+		assertEquals(bread_ingredients.size(), 3);
 	}
 
 	@Test
@@ -158,5 +155,16 @@ public class IngredientTest {
 		i = ingredientRepo.findByName("apple");
 		assertNotNull(i);
 		log.info(i.toString());
+	}
+
+	@Test
+	@Order(4)
+	public void testAddFreshMadeGoodNoIngredients() {
+		FreshMadeGood orange_smoothie = new FreshMadeGood("Orange Smoothie");
+		try {
+			freshMadeGoodRepo.save(orange_smoothie);
+			fail("Didn't throw error when FreshMadeGood with no ingredients was added.");
+		  } catch (Exception e) {
+		  }
 	}
 }

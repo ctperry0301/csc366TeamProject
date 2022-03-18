@@ -50,42 +50,181 @@ public class SupplyDetailsTest {
 
     @Autowired
     private OwnerRepository ownerRepo;
-
+  
     @Autowired
     private LocationRepository locationRepo;
+  
+    @Autowired
+    private LocationManagerRepository managerRepo;
+  
+    @Autowired
+    private EmployeeRepository empRepo;
+  
+    @Autowired
+    private IngredientRepository ingredientRepo;
+  
+    @Autowired
+    private SupplierRepository supplierRepo;
+  
+    @Autowired
+    private SupplyDetailRepository supplyDetailRepo;
+  
+    @Autowired
+    private FreshMadeGoodRepository freshMadeGoodRepo;
 
     @Autowired
-    private LocationManagerRepository locationManagerRepo;
+    private SuppliedIngredientRepository suppliedIngredientRepo;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private SuppliedPackagedGoodRepository suppliedPackagedGoodRepo;
 
-    private final Owner owner = new Owner("Joe", "Shmoe");
-    private Location location = new Location("addr", new java.sql.Date(1000000));
-    private final Employee managerEmp = new Employee("Nate", "Holland", new java.sql.Date(1000000),
-            Long.valueOf(12345));
-    private LocationManager manager = new LocationManager(0L, location, 500); // managerEmp.getEmployeeId()
-    private SupplyDetail supplyDetailExample = null;
-    private SuppliedIngredient ingredient1 = null;
+    @Autowired
+    private PackagedGoodRepository packagedGoodRepo;
+  
+    private final Location loc = new Location("addr", new java.sql.Date(1000000));
+    private final Employee managerEmp = new Employee("manager", "stuff", new java.sql.Date(1000000),
+        Long.valueOf(12345));
+    private LocationManager manager = new LocationManager(0L, loc, 1000); // managerEmp.getEmployeeId()
+    private Owner owner = new Owner("owner", "name");
+  
+    private final Ingredient flour = new Ingredient("Flour");
+    private final Ingredient yeast = new Ingredient("Yeast");
+    private final Ingredient salt = new Ingredient("Salt");
+  
+    private final SuppliedIngredient supplied_flour = new SuppliedIngredient(10, flour, 1.99);
+    private final SuppliedIngredient supplied_yeast = new SuppliedIngredient(5, yeast, 0.25);
+    private final SuppliedIngredient supplied_salt = new SuppliedIngredient(2, salt, 6.00);
+  
+    private final Supplier supplier = new Supplier("1 Grand Ave, San Luis Obispo, CA, 93405");
+    private final SupplyDetail supplyDetail = new SupplyDetail();
+    private final FreshMadeGood bread = new FreshMadeGood("bread");
 
+    private final PackagedGood ice_cream = new PackagedGood("Ice Cream");
+  
     @BeforeEach
     private void setup() {
-        ownerRepo.saveAndFlush(owner);
+      // establish location, owner, and manager connections.
+      ownerRepo.saveAndFlush(owner);
+      empRepo.saveAndFlush(managerEmp);
+      owner.addLocation(loc);
+      manager = new LocationManager(managerEmp.getEmployeeId(), loc, 500);
+      loc.setLocationManager(manager);
+      locationRepo.save(loc);
+      managerRepo.saveAndFlush(manager);
+  
+      ingredientRepo.save(flour);
+      ingredientRepo.save(yeast);
+      ingredientRepo.save(salt);
+  
+      bread.addIngredient(flour);
+      bread.addIngredient(salt);
+      bread.addIngredient(yeast);
+  
 
-        owner.addLocation(location);
-        location.setLocationManager(manager);
 
-        locationRepo.saveAndFlush(location);
-        employeeRepository.saveAndFlush(managerEmp);
-        locationManagerRepo.saveAndFlush(manager);
+      freshMadeGoodRepo.save(bread);
+  
+      supplied_flour.setSupplyDetail(supplyDetail);
+      supplied_salt.setSupplyDetail(supplyDetail);
+      supplied_yeast.setSupplyDetail(supplyDetail);
+      //supplyDetail.addSuppliedIngredient(supplied_flour);
+      //supplyDetail.addSuppliedIngredient(supplied_yeast);
+      //supplyDetail.addSuppliedIngredient(supplied_salt);
+
+      supplierRepo.saveAndFlush(supplier);
+      supplier.setSupplierAddress("1 Grand Ave, San Luis Obispo, CA, 93405");
+      supplierRepo.saveAndFlush(supplier);
+      supplyDetail.setLocation(loc);
+      supplyDetail.setSupplier(supplier);
+      supplyDetailRepo.save(supplyDetail);
+
+      suppliedIngredientRepo.save(supplied_flour);
+      suppliedIngredientRepo.save(supplied_salt);
+      suppliedIngredientRepo.save(supplied_yeast);
+
+  
+      //supplyDetailRepo.save(supplyDetail);
     }
 
     @Test
     @Order(1)
-    public void testAddSupplyDetails() {
+    public void testFindSupplyDetails() {
         // suppliedIngredient = new SuppliedIngredient
         // supplyDetailExample = new SupplyDetail();
         assertTrue(true);
+        List<SupplyDetail> supplyDetailsLst = supplyDetailRepo.findAll();
+
+        assertEquals(supplyDetailsLst.size(), 1);
+        
+        SupplyDetail breadIngredientSupplyDetail = supplyDetailsLst.get(0);
+        // assert no packaged goods are part of the SupplyDetail
+        assertEquals(breadIngredientSupplyDetail.getSuppliedPackagedGoods().size(), 0);
+        assertEquals(breadIngredientSupplyDetail.getSuppliedIngredients().size(), 3);
     }
+
+    @Test
+    @Order(2)
+    public void testGetSupplyDetailsPrice() {
+      List<SupplyDetail> supplyDetailsLst = supplyDetailRepo.findAll();
+      assertEquals(supplyDetailsLst.size(), 1);
+      SupplyDetail breadIngredientSupplyDetail = supplyDetailsLst.get(0);
+
+      assertEquals(breadIngredientSupplyDetail.getPrice(), 33.15);
+    }
+
+    @Test
+    @Order(3)
+    public void testAddSuppliedIngredientNoSupplyDetails() {
+      SuppliedIngredient si = new SuppliedIngredient(10, flour, 25.00); 
+      try {
+        suppliedIngredientRepo.save(si);
+        fail("Didn't throw error when suppliedIngredient w/ no foreign key to SupplyDetail was added.");
+        } catch (Exception e) {
+        }
+    }
+
+    @Test
+    @Order(4)
+    public void testAddSuppliedFreshMadeGoodNoSupplyDetails() {
+      PackagedGood waffle = new PackagedGood("Waffle");
+      SuppliedPackagedGood supplied_waffles = new SuppliedPackagedGood(10, waffle); 
+      try {
+        suppliedPackagedGoodRepo.save(supplied_waffles);
+        fail("Didn't throw error when suppliedIngredient w/ no foreign key to SupplyDetail was added.");
+        } catch (Exception e) {
+        }
+    }
+
+    @Test
+    @Order(5)
+    public void testGetSupplyDetailFromSuppliedPackagedGood() {
+      PackagedGood waffle = new PackagedGood("Waffle");
+      SuppliedPackagedGood supplied_waffles = new SuppliedPackagedGood(10, waffle); 
+      //supplyDetail.addSuppliedPackagedGood(supplied_waffles);
+      supplied_waffles.setSupplyDetail(supplyDetail);
+      
+      log.info(supplied_waffles.toString());
+
+      packagedGoodRepo.save(waffle);
+
+      suppliedPackagedGoodRepo.save(supplied_waffles);
+      
+      List<SuppliedPackagedGood> suppliedPackagedGoodsList = suppliedPackagedGoodRepo.findAll();
+
+      assertEquals(suppliedPackagedGoodsList.size(), 1);
+    }
+
+    @Test
+    @Order(6)
+    public void testGetSupplyDetailFromSuppliedIngredient() {
+      SuppliedIngredient s_salt = suppliedIngredientRepo.findBySuppliedIngredientId(supplied_salt.getSuppliedIngredientId());
+      
+      assertNotNull(s_salt);
+      
+      //List<SuppliedPackagedGood> suppliedPackagedGoodsList = suppliedPackagedGoodRepo.findAll();
+
+      //assertEquals(suppliedPackagedGoodsList.size(), 1);
+    }
+    
 
 }

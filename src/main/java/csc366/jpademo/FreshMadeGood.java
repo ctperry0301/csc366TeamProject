@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 
@@ -29,9 +31,10 @@ public class FreshMadeGood {
     @Column(nullable = false)
     private List<PurchasedFreshMadeGood> purchasedFreshMadeGoods = new ArrayList<>();
 
+    @NotEmpty
     @ManyToMany
     @JoinTable(name = "FreshMadeGoodIngredient", joinColumns = @JoinColumn(name = "ingredients"), inverseJoinColumns = @JoinColumn(name = "goods"))
-    List<Ingredient> ingredients;
+    List<Ingredient> ingredients = new ArrayList<>();;
 
     public void setIngredients(List<Ingredient> ingredient_lst) {
         this.ingredients = ingredient_lst;
@@ -39,6 +42,11 @@ public class FreshMadeGood {
 
     public void addIngredient(Ingredient i) {
         this.ingredients.add(i);
+        i.addGood(this);
+    }
+
+    public List<Ingredient> getIngredients() {
+        return this.ingredients;
     }
 
     public FreshMadeGood(String name) {

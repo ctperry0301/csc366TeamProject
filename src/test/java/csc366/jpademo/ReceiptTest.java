@@ -91,6 +91,8 @@ public class ReceiptTest {
   private final PackagedGood waffle = new PackagedGood("Waffle");
   private PurchasedPackagedGood purchasedWaffle = new PurchasedPackagedGood(receipt, 2L);
   private final FreshMadeGood smoothie = new FreshMadeGood("Bananamango Smoothie");
+  private final Ingredient milk = new Ingredient("Milk");
+  private final Ingredient bananaMango = new Ingredient("BananaMango");
   private PurchasedFreshMadeGood purchasedSmoothie = new PurchasedFreshMadeGood(receipt, 4L);
 
   @BeforeEach
@@ -110,7 +112,11 @@ public class ReceiptTest {
     receipt.addPurchasedPackagedGood(purchasedWaffle);
     // pGRepo.saveAndFlush(waffle);
     // purchasedPGRepo.saveAndFlush(purchasedWaffle);
+    ingredientRepo.save(milk);
+    ingredientRepo.save(bananaMango);
 
+    smoothie.addIngredient(milk);
+    smoothie.addIngredient(bananaMango);
     fMGRepo.save(smoothie);
     smoothie.addPurchasedFreshMadeGood(purchasedSmoothie);
     receipt.addPurchasedFreshMadeGood(purchasedSmoothie);

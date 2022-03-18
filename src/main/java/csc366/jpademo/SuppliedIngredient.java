@@ -21,7 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "SuppliedPackagedGood", uniqueConstraints = @UniqueConstraint(columnNames = "suppliedIngredientId"))
+@Table(name = "SuppliedIngredien", uniqueConstraints = @UniqueConstraint(columnNames = "suppliedIngredientId"))
 
 public class SuppliedIngredient {
     @Id
@@ -43,12 +43,31 @@ public class SuppliedIngredient {
     @JoinColumn(name = "ingredient", referencedColumnName = "ingredientId")
     private Ingredient ingredient;
 
-    public SuppliedIngredient(int quantity, Ingredient ingredient) {
+    //@NotNull
+    private double pricePerUnit;
+
+    public SuppliedIngredient(int quantity, Ingredient ingredient, double pricePerUnit) {
         this.ingredient = ingredient;
         this.quantity = quantity;
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    public SuppliedIngredient() {}
+
+    public void setSupplyDetail(SupplyDetail sd) {
+        this.supplyDetail = sd;
+        sd.addSuppliedIngredient(this);
     }
 
     public long getQuantity() {
         return this.quantity;
+    }
+
+    public double getTotalPrice() {
+        return this.quantity * this.pricePerUnit;
+    }
+
+    public long getSuppliedIngredientId() {
+        return this.suppliedIngredientId;
     }
 }

@@ -22,6 +22,9 @@ public class PackagedGood {
     @Column(nullable = false)
     private List<PurchasedPackagedGood> purchasedPackagedGoods = new ArrayList<>();
 
+    @OneToMany(mappedBy = "packagedGood", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    private List<SuppliedPackagedGood> suppliedPackagedGoods = new ArrayList<>();
+
     public PackagedGood(String name) {
         this.name = name;
     }
